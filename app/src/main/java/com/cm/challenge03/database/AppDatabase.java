@@ -15,7 +15,7 @@ import com.cm.challenge03.database.entities.Temperature;
 @Database(entities = {Humidity.class, Temperature.class}, exportSchema = false, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DB_NAME = "challenge03_db";
+    private static final String DB_NAME = "arduino_db";
     private static AppDatabase instance;
 
     public static synchronized AppDatabase getInstance(Context context) {

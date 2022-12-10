@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <PreferenceCategory
+        app:key="devices_category"
+        app:title="Devices">
+
+        <SwitchPreferenceCompat
+            app:key="led"
+            app:title="Turn On LED"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:key="sensors_category"
+        app:title="Sensors">
+
+        <SwitchPreferenceCompat
+            app:key="humidity"
+            app:title="Enable Humidity"/>
+
+        <SwitchPreferenceCompat
+            app:key="temperature"
+            app:title="Enable Temperature"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
