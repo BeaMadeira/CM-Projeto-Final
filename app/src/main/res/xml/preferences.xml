@@ -26,4 +26,24 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        app:key="notifications_category"
+        app:title="Notifications" >
+
+        <EditTextPreference
+            app:key="humidity_notification"
+            app:title="Humidity Notification"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="@string/dialog_title_humidity_notification"
+            app:dialogMessage="@string/dialog_message_humidity_notification" />
+
+        <EditTextPreference
+            app:key="temperature_notification"
+            app:title="Temperature Notification"
+            app:useSimpleSummaryProvider="true"
+            app:dialogTitle="@string/dialog_title_temperature_notification"
+            app:dialogMessage="@string/dialog_message_temperature_notification" />
+
+    </PreferenceCategory>
+
 </PreferenceScreen>

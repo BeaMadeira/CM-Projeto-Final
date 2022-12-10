@@ -6,4 +6,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
+    <string name="dialog_title_humidity_notification">Humidity Notification</string>
+    <string name="dialog_title_temperature_notification">Temperature Notification</string>
+    <string name="dialog_message_temperature_notification">Message</string>
+    <string name="dialog_message_humidity_notification">Message</string>
 </resources>
