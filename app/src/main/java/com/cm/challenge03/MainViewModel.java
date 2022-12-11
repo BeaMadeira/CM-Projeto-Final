@@ -1,4 +1,4 @@
-package com.cm.challenge03.ui.main;
+package com.cm.challenge03;
 
 import androidx.lifecycle.ViewModel;
 

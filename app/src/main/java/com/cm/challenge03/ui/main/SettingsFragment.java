@@ -5,15 +5,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceFragmentCompat;
 
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
+import com.cm.challenge03.MainViewModel;
 import com.cm.challenge03.R;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
 

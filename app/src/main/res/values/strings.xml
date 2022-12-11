@@ -10,4 +10,7 @@
     <string name="dialog_title_temperature_notification">Temperature Notification</string>
     <string name="dialog_message_temperature_notification">Message</string>
     <string name="dialog_message_humidity_notification">Message</string>
+    <string name="connected">Connected</string>
+    <string name="connection_lost">Connection Lost</string>
+    <string name="connection_not_established">Connection not Established</string>
 </resources>

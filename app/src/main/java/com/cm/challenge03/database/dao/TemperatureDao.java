@@ -31,17 +31,20 @@ public interface TemperatureDao {
     Temperature findTemperatureById(int uid);
 
     @Insert
-    List<Long> insertTemperatures(Temperature... notes);
+    Long insertTemperature(Temperature temperature);
+
+    @Insert
+    List<Long> insertTemperatures(Temperature... temperatures);
 
     @Update
-    Integer updateTemperature(Temperature note);
+    Integer updateTemperature(Temperature temperature);
 
     @Update
-    Integer updateTemperatures(Temperature... notes);
+    Integer updateTemperatures(Temperature... temperatures);
 
     @Delete
-    Integer deleteTemperature(Temperature note);
+    Integer deleteTemperature(Temperature temperature);
 
     @Delete
-    Integer deleteTemperatures(Temperature... notes);
+    Integer deleteTemperatures(Temperature... temperatures);
 }

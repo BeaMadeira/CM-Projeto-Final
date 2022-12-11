@@ -31,17 +31,20 @@ public interface HumidityDao {
     Humidity findHumidityById(int uid);
 
     @Insert
-    List<Long> insertHumidities(Humidity... notes);
+    Long insertHumidity(Humidity humidity);
+
+    @Insert
+    List<Long> insertHumidities(Humidity... humidities);
 
     @Update
-    Integer updateHumidity(Humidity note);
+    Integer updateHumidity(Humidity humidity);
 
     @Update
-    Integer updateHumidities(Humidity... notes);
+    Integer updateHumidities(Humidity... humidities);
 
     @Delete
-    Integer deleteHumidity(Humidity note);
+    Integer deleteHumidity(Humidity humidity);
 
     @Delete
-    Integer deleteHumidities(Humidity... notes);
+    Integer deleteHumidities(Humidity... humidities);
 }
