@@ -1,5 +1,6 @@
 package com.cm.challenge03;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -9,12 +10,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.cm.challenge03.ui.main.FirstFragment;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
 import com.cm.challenge03.ui.main.interfaces.MQTTInterface;
 
-import org.apache.commons.lang3.SerializationUtils;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -44,8 +45,15 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
                 Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
-                // TODO Subscribe to topics based on current Preferences
-                subscribe("cm/led/status");
+                subscribe(getResources().getString(R.string.led_status_topic));
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                publish(getResources().getString(R.string.led_topic), Boolean.toString(sharedPreferences.getBoolean("led", false)));
+                if (sharedPreferences.getBoolean("humidity", true)) {
+                    subscribe(getResources().getString(R.string.humidity_topic));
+                }
+                if (sharedPreferences.getBoolean("temperature", true)) {
+                    subscribe(getResources().getString(R.string.temperature_topic));
+                }
             }
 
             @Override
@@ -55,22 +63,19 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                switch (topic) {
-                    case "cm/led/status":
-                        String content = new String(message.getPayload());
-                        if(content.equals("true")) {
-                            Toast.makeText(getApplicationContext(), R.string.led_on, Toast.LENGTH_SHORT).show();
-                        }
-                        else if (content.equals("false")) {
-                            Toast.makeText(getApplicationContext(), R.string.led_off, Toast.LENGTH_SHORT).show();
-                        }
-                        break;
-                    case "cm/humidity":
-                        // TODO Message arrived from topic cm/humidity
-                        break;
-                    case "cm/temperature":
-                        // TODO Message arrived from topic cm/temperature
-                        break;
+                if (topic.equals(getResources().getString(R.string.led_status_topic))) {
+                    String content = new String(message.getPayload());
+                    if (content.equals("true")) {
+                        Toast.makeText(getApplicationContext(), R.string.led_on, Toast.LENGTH_SHORT).show();
+                    } else if (content.equals("false")) {
+                        Toast.makeText(getApplicationContext(), R.string.led_off, Toast.LENGTH_SHORT).show();
+                    }
+                } else if (topic.equals(getResources().getString(R.string.humidity_topic))) {
+                    // TODO Message arrived from topic cm/humidity
+                    Toast.makeText(getApplicationContext(), R.string.humidity_topic, Toast.LENGTH_SHORT).show();
+                } else if (topic.equals(getResources().getString(R.string.temperature_topic))) {
+                    // TODO Message arrived from topic cm/temperature
+                    Toast.makeText(getApplicationContext(), R.string.temperature_topic, Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -116,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void subscribe(String topic) {
         if (helper.mqttAndroidClient.isConnected()) {
             helper.subscribeToTopic(topic);
-            // TODO
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
         }
@@ -140,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void unsubscribe(String topic) {
         if (helper.mqttAndroidClient.isConnected()) {
             helper.unsubscribeToTopic(topic);
-            // TODO
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
         }

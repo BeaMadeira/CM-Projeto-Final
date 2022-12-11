@@ -50,9 +50,25 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (key.equals("led")) {
-            String message = Boolean.toString(sharedPreferences.getBoolean(key, false));
-            ((MQTTInterface) requireActivity()).publish("cm/led", message);
+        switch (key) {
+            case "led":
+                String message = Boolean.toString(sharedPreferences.getBoolean(key, false));
+                ((MQTTInterface) requireActivity()).publish(getResources().getString(R.string.led_topic), message);
+                break;
+            case "humidity":
+                if (sharedPreferences.getBoolean(key, true)) {
+                    ((MQTTInterface) requireActivity()).subscribe(getResources().getString(R.string.humidity_topic));
+                } else {
+                    ((MQTTInterface) requireActivity()).unsubscribe(getResources().getString(R.string.humidity_topic));
+                }
+                break;
+            case "temperature":
+                if (sharedPreferences.getBoolean(key, true)) {
+                    ((MQTTInterface) requireActivity()).subscribe(getResources().getString(R.string.temperature_topic));
+                } else {
+                    ((MQTTInterface) requireActivity()).unsubscribe(getResources().getString(R.string.temperature_topic));
+                }
+                break;
         }
     }
 

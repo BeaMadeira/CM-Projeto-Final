@@ -13,6 +13,9 @@
     <string name="connection_lost">Connection Lost</string>
     <string name="connection_not_established">Connection not Established</string>
     <string name="led_topic">cm/led</string>
+    <string name="led_status_topic">cm/led/status</string>
+    <string name="humidity_topic">cm/humidity</string>
+    <string name="temperature_topic">cm/temperature</string>
     <string name="led_on">LED was Turned On</string>
     <string name="led_off">LED was Turned Off</string>
 </resources>
