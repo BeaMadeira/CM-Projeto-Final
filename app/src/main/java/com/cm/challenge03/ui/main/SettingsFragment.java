@@ -1,21 +1,24 @@
 package com.cm.challenge03.ui.main;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
 
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-
 import com.cm.challenge03.MainViewModel;
 import com.cm.challenge03.R;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
+import com.cm.challenge03.ui.main.interfaces.MQTTInterface;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+import java.util.Objects;
+
+public class SettingsFragment extends PreferenceFragmentCompat implements SharedPreferences.OnSharedPreferenceChangeListener {
     private MainViewModel mainViewModel;
 
     @Override
@@ -43,5 +46,25 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             ((FragmentChanger) requireActivity()).popBackStack();
             return true;
         });
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals("led")) {
+            String message = Boolean.toString(sharedPreferences.getBoolean(key, false));
+            ((MQTTInterface) requireActivity()).publish("cm/led", message);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences()).registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Objects.requireNonNull(getPreferenceScreen().getSharedPreferences()).unregisterOnSharedPreferenceChangeListener(this);
     }
 }

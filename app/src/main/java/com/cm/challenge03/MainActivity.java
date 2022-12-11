@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
                 // TODO Message arrived from topic cm/humidity
-                // TODO Messagearrived from topic cm/temperature
+                // TODO Message arrived from topic cm/temperature
             }
 
             @Override
@@ -108,16 +108,13 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
     @Override
     public void publish(String topic, String message) {
-        byte[] encodedPayload;
         if (!helper.mqttAndroidClient.isConnected()) {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
             return;
         }
         try {
-            // TODO
-            encodedPayload = SerializationUtils.serialize(message);
-            MqttMessage payload = new MqttMessage(encodedPayload);
-            helper.mqttAndroidClient.publish(topic, payload);
+            MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+            helper.mqttAndroidClient.publish(topic, mqttMessage);
         } catch (MqttException e) {
             e.printStackTrace();
         }

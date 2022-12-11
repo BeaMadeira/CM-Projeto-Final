@@ -3,7 +3,6 @@
     <string name="channel_name">Temperature</string>
     <string name="channel_description">Temperature</string>
     <string name="settings">Settings</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="back">Back</string>
     <string name="dialog_title_humidity_notification">Humidity Notification</string>
@@ -13,4 +12,5 @@
     <string name="connected">Connected</string>
     <string name="connection_lost">Connection Lost</string>
     <string name="connection_not_established">Connection not Established</string>
+    <string name="led_topic">cm/led</string>
 </resources>
