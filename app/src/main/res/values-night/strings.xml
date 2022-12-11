@@ -14,4 +14,6 @@
     <string name="connection_lost">Connection Lost</string>
     <string name="connection_not_established">Connection not Established</string>
     <string name="led_topic">cm/led</string>
+    <string name="led_on">LED was Turned On</string>
+    <string name="led_off">LED was Turned Off</string>
 </resources>

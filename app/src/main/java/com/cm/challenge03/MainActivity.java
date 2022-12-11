@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             public void connectComplete(boolean reconnect, String serverURI) {
                 Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
                 // TODO Subscribe to topics based on current Preferences
+                subscribe("cm/led/status");
             }
 
             @Override
@@ -54,8 +55,23 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                // TODO Message arrived from topic cm/humidity
-                // TODO Message arrived from topic cm/temperature
+                switch (topic) {
+                    case "cm/led/status":
+                        String content = new String(message.getPayload());
+                        if(content.equals("true")) {
+                            Toast.makeText(getApplicationContext(), R.string.led_on, Toast.LENGTH_SHORT).show();
+                        }
+                        else if (content.equals("false")) {
+                            Toast.makeText(getApplicationContext(), R.string.led_off, Toast.LENGTH_SHORT).show();
+                        }
+                        break;
+                    case "cm/humidity":
+                        // TODO Message arrived from topic cm/humidity
+                        break;
+                    case "cm/temperature":
+                        // TODO Message arrived from topic cm/temperature
+                        break;
+                }
             }
 
             @Override
