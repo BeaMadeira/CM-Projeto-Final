@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
+import com.cm.challenge03.database.entities.Humidity;
+import com.cm.challenge03.database.entities.Temperature;
 import com.cm.challenge03.ui.main.FirstFragment;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
 import com.cm.challenge03.ui.main.interfaces.MQTTInterface;
@@ -22,16 +24,18 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.Date;
+
 // ARDUINO PROJECT: https://wokwi.com/projects/348786713380782674
 
 public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface {
-    private MainViewModel mViewModel;
+    private MainViewModel mainViewModel;
     private MQTTHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mViewModel = getViewModel(MainViewModel.class);
+        mainViewModel = getViewModel(MainViewModel.class);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             addFragment(FirstFragment.class, false);
@@ -72,10 +76,14 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                     }
                 } else if (topic.equals(getResources().getString(R.string.humidity_topic))) {
                     // TODO Message arrived from topic cm/humidity
-                    Toast.makeText(getApplicationContext(), R.string.humidity_topic, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), new String(message.getPayload()), Toast.LENGTH_SHORT).show();
+                    Double value = Double.parseDouble(new String(message.getPayload()));
+                    mainViewModel.insertHumidity(new Humidity(new Date(), value));
                 } else if (topic.equals(getResources().getString(R.string.temperature_topic))) {
                     // TODO Message arrived from topic cm/temperature
-                    Toast.makeText(getApplicationContext(), R.string.temperature_topic, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), new String(message.getPayload()), Toast.LENGTH_SHORT).show();
+                    Double value = Double.parseDouble(new String(message.getPayload()));
+                    mainViewModel.insertTemperature(new Temperature(new Date(), value));
                 }
             }
 

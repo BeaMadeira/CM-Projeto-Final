@@ -9,11 +9,13 @@ import androidx.annotation.NonNull;
 import com.cm.challenge03.database.AppDatabase;
 import com.cm.challenge03.database.dao.TemperatureDao;
 import com.cm.challenge03.database.entities.Temperature;
+import com.cm.challenge03.ui.main.interfaces.TaskCallback;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+// TODO Handler Post
 public class TemperatureRepository {
     private final TemperatureDao temperatureDao;
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -24,20 +26,21 @@ public class TemperatureRepository {
         temperatureDao = appDatabase.temperatureDao();
     }
 
-    public void getHumidities() {
+    public void getTemperatures(TaskCallback taskCallback) {
         executor.execute(() -> {
             List<Temperature> temperatureList = temperatureDao.getTemperatures();
             handler.post(() -> {
-                //TODO Callback
+                taskCallback.onCompletedGetTemperatures(temperatureList);
             });
         });
     }
 
-    public void insertTemperature(Temperature temperature) {
+    public void insertTemperature(TaskCallback taskCallback, Temperature temperature) {
         executor.execute(() -> {
             Long uid = temperatureDao.insertTemperature(temperature);
+            List<Temperature> temperatureList = temperatureDao.getTemperatures();
             handler.post(() -> {
-                //TODO Callback
+                taskCallback.onCompletedInsertTemperature(temperatureList);
             });
         });
     }

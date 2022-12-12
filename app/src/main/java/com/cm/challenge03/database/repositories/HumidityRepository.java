@@ -9,11 +9,13 @@ import androidx.annotation.NonNull;
 import com.cm.challenge03.database.AppDatabase;
 import com.cm.challenge03.database.dao.HumidityDao;
 import com.cm.challenge03.database.entities.Humidity;
+import com.cm.challenge03.ui.main.interfaces.TaskCallback;
 
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+// TODO Handler Post
 public class HumidityRepository {
     private final HumidityDao humidityDao;
     private final Executor executor = Executors.newSingleThreadExecutor();
@@ -24,20 +26,21 @@ public class HumidityRepository {
         humidityDao = appDatabase.humidityDao();
     }
 
-    public void getHumidities() {
+    public void getHumidities(TaskCallback taskCallback) {
         executor.execute(() -> {
             List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
-                //TODO Callback
+                taskCallback.onCompletedGetHumidities(humidityList);
             });
         });
     }
 
-    public void insertHumidity(Humidity humidity) {
+    public void insertHumidity(TaskCallback taskCallback, Humidity humidity) {
         executor.execute(() -> {
             Long uid = humidityDao.insertHumidity(humidity);
+            List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
-                //TODO Callback
+                taskCallback.onCompletedInsertHumidity(humidityList);
             });
         });
     }
@@ -45,6 +48,7 @@ public class HumidityRepository {
     public void insertHumidities(Humidity... humidities) {
         executor.execute(() -> {
             List<Long> uids = humidityDao.insertHumidities(humidities);
+            List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
                 //TODO Callback
             });
@@ -54,6 +58,7 @@ public class HumidityRepository {
     public void updateHumidity(Humidity humidity) {
         executor.execute(() -> {
             Integer n = humidityDao.updateHumidity(humidity);
+            List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
                 //TODO Callback
             });
@@ -63,6 +68,7 @@ public class HumidityRepository {
     public void updateHumidities(Humidity... humidities) {
         executor.execute(() -> {
             Integer n = humidityDao.updateHumidities(humidities);
+            List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
                 //TODO Callback
             });
@@ -72,6 +78,7 @@ public class HumidityRepository {
     public void deleteHumidity(Humidity humidity) {
         executor.execute(() -> {
             Integer n = humidityDao.deleteHumidity(humidity);
+            List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
                 //TODO Callback
             });
@@ -81,6 +88,7 @@ public class HumidityRepository {
     public void deleteHumidities(Humidity... humidities) {
         executor.execute(() -> {
             Integer n = humidityDao.deleteHumidities(humidities);
+            List<Humidity> humidityList = humidityDao.getHumidities();
             handler.post(() -> {
                 //TODO Callback
             });
