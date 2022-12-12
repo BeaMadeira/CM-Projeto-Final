@@ -28,15 +28,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Shared
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toolbar toolbar = view.findViewById(R.id.settings_toolbar);
-        toolbar.setTitle(R.string.app_name);
-        toolbar.inflateMenu(R.menu.settings_menu);
-        Menu menu = toolbar.getMenu();
-
-        MenuItem settings = menu.findItem(R.id.settings_back);
-        settings.setOnMenuItemClickListener(item -> {
-            ((FragmentChanger) requireActivity()).popBackStack();
-            return true;
-        });
+        toolbar.setTitle(R.string.settings);
+        toolbar.setNavigationOnClickListener(v -> ((FragmentChanger) requireActivity()).popBackStack());
     }
 
     @Override
