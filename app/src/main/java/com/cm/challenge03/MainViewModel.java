@@ -16,12 +16,11 @@ import com.cm.challenge03.ui.main.interfaces.TaskCallback;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Implement the ViewModel
 public class MainViewModel extends AndroidViewModel implements TaskCallback {
     private final HumidityRepository humidityRepository;
     private final TemperatureRepository temperatureRepository;
-    private MutableLiveData<List<Humidity>> humiditiesList;
-    private MutableLiveData<List<Temperature>> temperaturesList;
+    private final MutableLiveData<List<Humidity>> humiditiesList = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<Temperature>> temperaturesList = new MutableLiveData<>(new ArrayList<>());
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -30,18 +29,10 @@ public class MainViewModel extends AndroidViewModel implements TaskCallback {
     }
 
     public LiveData<List<Humidity>> getHumiditiesList() {
-        if (humiditiesList == null) {
-            humiditiesList = new MutableLiveData<>(new ArrayList<>());
-            getHumidities(this);
-        }
         return humiditiesList;
     }
 
     public LiveData<List<Temperature>> getTemperaturesList() {
-        if (temperaturesList == null) {
-            temperaturesList = new MutableLiveData<>(new ArrayList<>());
-            getTemperatures(this);
-        }
         return temperaturesList;
     }
 
@@ -78,22 +69,22 @@ public class MainViewModel extends AndroidViewModel implements TaskCallback {
     }
 
     @Override
-    public <T> void onCompletedInsertHumidity(List<T> result) {
-        humiditiesList.setValue((List<Humidity>) result);
+    public void onCompletedInsertHumidity(List<Humidity> result) {
+        humiditiesList.setValue(result);
     }
 
     @Override
-    public <T> void onCompletedGetHumidities(List<T> result) {
-        humiditiesList.setValue((List<Humidity>) result);
+    public void onCompletedGetHumidities(List<Humidity> result) {
+        humiditiesList.setValue(result);
     }
 
     @Override
-    public <T> void onCompletedInsertTemperature(List<T> result) {
-        temperaturesList.setValue((List<Temperature>) result);
+    public void onCompletedInsertTemperature(List<Temperature> result) {
+        temperaturesList.setValue(result);
     }
 
     @Override
-    public <T> void onCompletedGetTemperatures(List<T> result) {
-        temperaturesList.setValue((List<Temperature>) result);
+    public void onCompletedGetTemperatures(List<Temperature> result) {
+        temperaturesList.setValue(result);
     }
 }

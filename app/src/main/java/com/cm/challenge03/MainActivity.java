@@ -1,10 +1,17 @@
 package com.cm.challenge03;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -28,7 +35,10 @@ import java.util.Date;
 
 // ARDUINO PROJECT: https://wokwi.com/projects/348786713380782674
 
+// TODO: Refactor code to make it more modular and readable
 public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface {
+    private final static String CHANNEL_ID = "CHALLENGE03";
+    private int notificationId = 0;
     private MainViewModel mainViewModel;
     private MQTTHelper helper;
 
@@ -37,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         super.onCreate(savedInstanceState);
         mainViewModel = getViewModel(MainViewModel.class);
         setContentView(R.layout.activity_main);
+        createNotificationChannel();
         if (savedInstanceState == null) {
             addFragment(FirstFragment.class, false);
         }
@@ -75,15 +86,47 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                         Toast.makeText(getApplicationContext(), R.string.led_off, Toast.LENGTH_SHORT).show();
                     }
                 } else if (topic.equals(getResources().getString(R.string.humidity_topic))) {
-                    // TODO Message arrived from topic cm/humidity
+                    // Message arrived from topic cm/humidity
                     Toast.makeText(getApplicationContext(), new String(message.getPayload()), Toast.LENGTH_SHORT).show();
                     Double value = Double.parseDouble(new String(message.getPayload()));
                     mainViewModel.insertHumidity(new Humidity(new Date(), value));
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    Double thresholdValue = Double.parseDouble(sharedPreferences.getString("humidity_notification", "0"));
+
+                    if (value >= thresholdValue) {
+                        // Issue Notification
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                                .setSmallIcon(R.drawable.outline_water_drop_24)
+                                .setContentTitle("Humidity")
+                                .setContentText("Humidity above threshold value " + thresholdValue)
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setAutoCancel(true);
+
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                        notificationManager.notify(notificationId++, builder.build());
+                    }
                 } else if (topic.equals(getResources().getString(R.string.temperature_topic))) {
-                    // TODO Message arrived from topic cm/temperature
+                    // Message arrived from topic cm/temperature
                     Toast.makeText(getApplicationContext(), new String(message.getPayload()), Toast.LENGTH_SHORT).show();
                     Double value = Double.parseDouble(new String(message.getPayload()));
                     mainViewModel.insertTemperature(new Temperature(new Date(), value));
+
+                    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                    Double thresholdValue = Double.parseDouble(sharedPreferences.getString("temperature_notification", "0"));
+
+                    if (value >= thresholdValue) {
+                        // Issue Notification
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                                .setSmallIcon(R.drawable.outline_thermostat_24)
+                                .setContentTitle("Temperature")
+                                .setContentText("Temperature above threshold value " + thresholdValue)
+                                .setPriority(NotificationCompat.PRIORITY_MAX)
+                                .setAutoCancel(true);
+
+                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+                        notificationManager.notify(notificationId++, builder.build());
+                    }
                 }
             }
 
@@ -94,6 +137,24 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         });
         helper.connect();
     }
+
+    // https://developer.android.com/develop/ui/views/notifications/build-notification
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 
     @Override
     public void addFragment(Class<? extends Fragment> fragment, boolean addToBackStack) {

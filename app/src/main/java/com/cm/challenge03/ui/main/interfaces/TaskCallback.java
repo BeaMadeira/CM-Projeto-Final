@@ -1,13 +1,16 @@
 package com.cm.challenge03.ui.main.interfaces;
 
+import com.cm.challenge03.database.entities.Humidity;
+import com.cm.challenge03.database.entities.Temperature;
+
 import java.util.List;
 
 public interface TaskCallback {
-    <T> void onCompletedInsertHumidity(List<T> result);
+    void onCompletedInsertHumidity(List<Humidity> result);
 
-    <T> void onCompletedGetHumidities(List<T> result);
+    void onCompletedGetHumidities(List<Humidity> result);
 
-    <T> void onCompletedInsertTemperature(List<T> result);
+    void onCompletedInsertTemperature(List<Temperature> result);
 
-    <T> void onCompletedGetTemperatures(List<T> result);
+    void onCompletedGetTemperatures(List<Temperature> result);
 }
