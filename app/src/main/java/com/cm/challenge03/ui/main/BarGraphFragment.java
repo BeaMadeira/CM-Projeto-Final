@@ -104,11 +104,14 @@ public class BarGraphFragment extends Fragment {
 
                 Date date = new Date();
                 Timestamp timestamp2 = new Timestamp(date.getTime());
+                long currentTime = System.currentTimeMillis();
+                long teste = 1000000;
+                BarEntry entry = new BarEntry(teste, 30f);
 
-                entries.add(new BarEntry(timestamp2.getTime(),30.0f));
+                entries.add(entry);
 
 
-                Toast.makeText(view.getContext(),""+timestamp2.getTime(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(),""+currentTime, Toast.LENGTH_SHORT).show();
 
 
                 BarDataSet tempSet = new BarDataSet(entries, "Company 1");
@@ -118,7 +121,7 @@ public class BarGraphFragment extends Fragment {
                 List<IBarDataSet> dataSets = new ArrayList<>();
                 dataSets.add(tempSet);
                 BarData data = new BarData(dataSets);
-                data.setBarWidth(100*0.6f);
+                data.setBarWidth(0.4f);
                 chart.setData(data);
                 chart.setFitBars(true);
 
