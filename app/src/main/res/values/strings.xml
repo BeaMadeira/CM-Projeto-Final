@@ -20,7 +20,7 @@
     <string name="led_off">LED was Turned Off</string>
     <string name="dashboard">Dashboard</string>
     <string name="dashboard_sub">Some subtitle here</string>
-     <string name="option1">Changes</string>
+    <string name="option1">Changes</string>
     <string name="option2">Averages</string>
     <string name="option3">Totals</string>
     <string name="option4">Values</string>
