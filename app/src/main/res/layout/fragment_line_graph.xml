@@ -36,6 +36,21 @@
         android:padding="16dp"
         >
 
+        <Switch
+            android:id="@+id/switch1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:switchMinWidth="56dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="120dp"
+            android:text="Switch1:"
+            android:textColor="#fafafa"
+            android:checked="true"
+            android:textOff="OFF"
+            android:textOn="ON"
+            android:gravity="end"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"/>
 
         <TextView
             android:id="@+id/textView3"
@@ -58,6 +73,7 @@
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
 
 
 

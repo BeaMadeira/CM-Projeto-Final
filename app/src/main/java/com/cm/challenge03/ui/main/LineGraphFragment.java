@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -73,6 +76,7 @@ public class LineGraphFragment extends Fragment {
 
         XAxis xAxis = lc.getXAxis();
         List<ILineDataSet> dataSets = new ArrayList<>();
+
         TaskCallback tc = new TaskCallback() {
 
             @Override
@@ -180,8 +184,28 @@ public class LineGraphFragment extends Fragment {
 
 
         mainViewModel.getHumidities(tc);
-        mainViewModel.getTemperatures(tc);
 
+
+        Switch sw = (Switch)  view.findViewById(R.id.switch1);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    Toast.makeText(getContext(),"checked",Toast.LENGTH_SHORT).show();
+                    mainViewModel.getTemperatures(tc);
+
+                } else {
+                    // The toggle is disabled
+                    Toast.makeText(getContext(),"not",Toast.LENGTH_SHORT).show();
+                    LineData data = lc.getData();
+                    ILineDataSet linedataset = data.getDataSetByLabel("Temperatura",false);
+                    data.removeDataSet(linedataset);
+                    lc.setData(data);
+                    lc.invalidate();
+
+                }
+            }
+        });
 
         xAxis.setGridLineWidth(1f);
         lc.getAxisLeft().setDrawGridLines(false);
