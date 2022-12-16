@@ -9,9 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
@@ -26,19 +23,17 @@ import com.cm.challenge03.database.entities.Temperature;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
 import com.cm.challenge03.ui.main.interfaces.TaskCallback;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Description;
-import com.github.mikephil.charting.components.Legend;
+
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.sql.Timestamp;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -193,21 +188,8 @@ public class LineGraphFragment extends Fragment {
 
 
 
-        SwitchCompat sw = (SwitchCompat)  view.findViewById(R.id.switch1);
-        Observer<List<Temperature>> obsTemp = new Observer<List<Temperature>>() {
-            @Override
-            public void onChanged(List<Temperature> temperatures) {
-                mainViewModel.getTemperatures(tc);
-                Log.d("DEBUG","UPDATING Temp");
-            }
-        };
-        Observer<List<Humidity>> obsHum = new Observer<List<Humidity>>() {
-            @Override
-            public void onChanged(List<Humidity> humidy) {
-                mainViewModel.getHumidities(tc);
-                Log.d("DEBUG","UPDATING Hum");
-            }
-        };
+        SwitchCompat sw =  view.findViewById(R.id.switch1);
+
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -229,7 +211,7 @@ public class LineGraphFragment extends Fragment {
             }
         });
 
-        SwitchCompat sw2 = (SwitchCompat)  view.findViewById(R.id.switch2);
+        SwitchCompat sw2 =  view.findViewById(R.id.switch2);
         sw2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
