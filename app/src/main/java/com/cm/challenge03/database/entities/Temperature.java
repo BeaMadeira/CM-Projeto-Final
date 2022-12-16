@@ -67,7 +67,7 @@ public class Temperature implements Serializable {
     public long squashTimestamp(){
 
         SimpleDateFormat formatter = new SimpleDateFormat(
-                "dd/MM/yyyy");
+                "dd/MM/yyyy hh");
         try {
             return formatter.parse(formatter.format(new Date(this.getTime()))).getTime();
         } catch (ParseException e) {

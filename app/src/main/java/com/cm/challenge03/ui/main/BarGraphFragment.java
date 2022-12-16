@@ -1,12 +1,12 @@
 package com.cm.challenge03.ui.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,14 +85,38 @@ public class BarGraphFragment extends Fragment {
         BarChart chart = (BarChart) view.findViewById(R.id.barChart);
 
         List<IBarDataSet> dataSets = new ArrayList<>();
-
+        XAxis xAxis = chart.getXAxis();
 
         TaskCallback tc = new TaskCallback() {
 
             @Override
             public void onCompletedInsertHumidity(List<Humidity> result) { }
             @Override
-            public void onCompletedGetHumidities(List<Humidity> result) { }
+            public void onCompletedGetHumidities(List<Humidity> result) {
+                List<BarEntry> entries = new ArrayList<>();
+                Map<Long, Double> timeToAverageValueMap = result.stream()
+                        .collect(Collectors.groupingBy(Humidity::squashTimestamp, Collectors.averagingDouble(Humidity::getValue)));
+
+                for (Map.Entry<Long, Double> entry : timeToAverageValueMap.entrySet()) {
+                    Long time = entry.getKey();
+                    Double averageValue = entry.getValue();
+                    entries.add(new BarEntry(time,Float.parseFloat(averageValue.toString())));
+                }
+
+                BarDataSet tempSet = new BarDataSet(entries, "Humidity");
+                tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+                dataSets.add(tempSet);
+
+                BarData data = new BarData(dataSets);
+                if(entries.size() == 1)
+                    data.setBarWidth(entries.get(0).getX()+1000000);
+                else data.setBarWidth((entries.get(1).getX()-entries.get(0).getX())*0.6f);
+
+                chart.setData(data);
+                chart.setFitBars(true);
+
+                chart.invalidate(); // refresh
+            }
             @Override
             public void onCompletedInsertTemperature(List<Temperature> result) { }
 
@@ -109,37 +133,61 @@ public class BarGraphFragment extends Fragment {
                     entries.add(new BarEntry(time,Float.parseFloat(averageValue.toString())));
                 }
 
-                //entries.add(new BarEntry(1671335200000f,-20f));
                 BarDataSet tempSet = new BarDataSet(entries, "Temperature");
                 tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-                XAxis xAxis = chart.getXAxis();
-                // use the interface IBarDataSet
+                tempSet.setColor(Color.RED);
                 dataSets.add(tempSet);
+
                 BarData data = new BarData(dataSets);
                 if(entries.size() == 1)
-//                    data.setBarWidth(entries.get(0).getX()+1000000f);
+                    data.setBarWidth(entries.get(0).getX()+1000000);
+                else data.setBarWidth((entries.get(1).getX()-entries.get(0).getX())*0.6f);
 
                 chart.setData(data);
                 chart.setFitBars(true);
-
-                ValueFormatter formatter = new LargeValueFormatter(){
-                    @Override
-                    public String getFormattedValue(float value){
-
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
-                        return sdf.format(value);
-                    }
-                };
-
-                xAxis.setGranularity(1f);
-                xAxis.setAvoidFirstLastClipping(true);
-                xAxis.setValueFormatter(formatter);
-                chart.getAxisLeft().setAxisMinimum(0f);
                 chart.invalidate(); // refresh
             }
         };
+        ValueFormatter formatter = new LargeValueFormatter(){
+            @Override
+            public String getFormattedValue(float value){
+                SimpleDateFormat sdf = new SimpleDateFormat("hh:mm");
+                return sdf.format(value);
+            }
+
+        };
+        ValueFormatter formatterTemp = new LargeValueFormatter(){
+            @Override
+            public String getFormattedValue(float value){
+                return value +" °C";
+            }
+        };
+        ValueFormatter formatterHum = new LargeValueFormatter(){
+            @Override
+            public String getFormattedValue(float value){
+                return value +"%";
+            }
+        };
+        mainViewModel.getHumidities(tc);
 
         mainViewModel.getTemperatures(tc);
+//        chart.groupBars(chart.getBarData()/,10f,10f);
+
+        xAxis.setGridLineWidth(1f);
+        xAxis.setTextSize(13f);
+        chart.getAxisLeft().setDrawGridLines(false);
+        chart.getAxisLeft().setTextSize(13f);
+        chart.getAxisRight().setTextSize(13f);
+        chart.getAxisLeft().setValueFormatter(formatterTemp);
+        chart.getAxisRight().setValueFormatter(formatterHum);
+        chart.setDescription(null);
+        chart.getAxisRight().setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setAvoidFirstLastClipping(true);
+        xAxis.setValueFormatter(formatter);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        chart.setDragEnabled(true);
     }
 
 }

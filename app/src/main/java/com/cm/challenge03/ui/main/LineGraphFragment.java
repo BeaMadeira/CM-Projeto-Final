@@ -158,7 +158,7 @@ public class LineGraphFragment extends Fragment {
                     @Override
                     public String getFormattedValue(float value){
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.UK);
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.UK);
                         return sdf.format(value);
                     }
                 };
@@ -173,16 +173,18 @@ public class LineGraphFragment extends Fragment {
                 xAxis.setGranularity(1f);
                 xAxis.setAvoidFirstLastClipping(true);
                 xAxis.setValueFormatter(formatter);
-                float middleground = (currentDayTimestamp+(result.get(0).getTime()))*0.5f;
-                middleground += 5000000f;
-                xAxis.setAxisMinimum(middleground);
+                if(result.size()>0) {
+                    float middleground = (currentDayTimestamp + (result.get(0).getTime())) * 0.5f;
+                    middleground += 5000000f;
+                    xAxis.setAxisMinimum(middleground);
 
-                lc.setDragEnabled(true);
+                    lc.setDragEnabled(true);
 
-                lc.setVisibleXRangeMaximum(result.get(0).getTime()*0.000007f);
+                    lc.setVisibleXRangeMaximum(result.get(0).getTime() * 0.000007f);
 
-                lc.invalidate(); // refresh
-                // Disable the vertical grid lines
+                    lc.invalidate(); // refresh
+                }
+
 
             }
         };
@@ -210,8 +212,8 @@ public class LineGraphFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
-                    mainViewModel.getTemperaturesList().observe(getViewLifecycleOwner(),obsTemp);
-
+//                    mainViewModel.getTemperaturesList().observe(getViewLifecycleOwner(),obsTemp);
+                    mainViewModel.getTemperatures(tc);
 
                 } else {
                     // The toggle is disabled
@@ -222,7 +224,7 @@ public class LineGraphFragment extends Fragment {
                         lc.clear();
                     else lc.setData(data);
                     lc.invalidate();
-                    mainViewModel.getTemperaturesList().removeObserver(obsTemp);
+//                    mainViewModel.getTemperaturesList().removeObserver(obsTemp);
                 }
             }
         });
@@ -232,7 +234,7 @@ public class LineGraphFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
-                    mainViewModel.getHumiditiesList().observe(getViewLifecycleOwner(),obsHum);
+//                    mainViewModel.getHumiditiesList().observe(getViewLifecycleOwner(),obsHum);
 
                     mainViewModel.getHumidities(tc);
 
@@ -245,7 +247,7 @@ public class LineGraphFragment extends Fragment {
                         lc.clear();
                     else lc.setData(data);
                     lc.invalidate();
-                    mainViewModel.getHumiditiesList().removeObserver(obsHum);
+//                    mainViewModel.getHumiditiesList().removeObserver(obsHum);
 
                 }
             }
