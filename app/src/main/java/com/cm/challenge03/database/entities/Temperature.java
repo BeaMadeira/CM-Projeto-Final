@@ -7,6 +7,8 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity(tableName = "temperatures")
@@ -62,6 +64,16 @@ public class Temperature implements Serializable {
     }
 
     public long getTime(){ return this.getDate().getTime(); }
+    public long squashTimestamp(){
+
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                "dd/MM/yyyy");
+        try {
+            return formatter.parse(formatter.format(new Date(this.getTime()))).getTime();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @NonNull
     @Override
     public String toString() {

@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,16 +31,20 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class BarGraphFragment extends Fragment {
     private MainViewModel mainViewModel;
@@ -77,7 +82,9 @@ public class BarGraphFragment extends Fragment {
         });
 
         BarChart chart = (BarChart) view.findViewById(R.id.barChart);
-        List<BarEntry> entries = new ArrayList<>();
+
+        List<IBarDataSet> dataSets = new ArrayList<>();
+
         TaskCallback tc = new TaskCallback() {
 
             @Override
@@ -86,50 +93,36 @@ public class BarGraphFragment extends Fragment {
             public void onCompletedGetHumidities(List<Humidity> result) { }
             @Override
             public void onCompletedInsertTemperature(List<Temperature> result) { }
+
+
             @Override
             public void onCompletedGetTemperatures(List<Temperature> result) {
-               /* result.forEach(
-                        temperature -> entries.add(
-                                new BarEntry(
-                                        temperature.getTime(),
-                                        Float.parseFloat(temperature.getValue().toString()
-                                        )
-                                )
-                        ));*/
+                List<BarEntry> entries = new ArrayList<>();
+                Map<Long, Double> timeToAverageValueMap = result.stream()
+                        .collect(Collectors.groupingBy(Temperature::squashTimestamp, Collectors.averagingDouble(Temperature::getValue)));
+                for (Map.Entry<Long, Double> entry : timeToAverageValueMap.entrySet()) {
+                    Long time = entry.getKey();
+                    Double averageValue = entry.getValue();
+                    entries.add(new BarEntry(time,Float.parseFloat(averageValue.toString())));
+                }
+                Log.d("DEBUG", entries.toString());
+//                entries.add(new BarEntry(1.67114899E12f,30f));
 
-
-
-
-
-
-                Date date = new Date();
-                Timestamp timestamp2 = new Timestamp(date.getTime());
-                long currentTime = System.currentTimeMillis();
-                long teste = 1000000;
-                BarEntry entry = new BarEntry(teste, 30f);
-
-                entries.add(entry);
-
-
-                Toast.makeText(view.getContext(),""+currentTime, Toast.LENGTH_SHORT).show();
-
-
-                BarDataSet tempSet = new BarDataSet(entries, "Company 1");
+                BarDataSet tempSet = new BarDataSet(entries, "Temperature");
                 tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
 
                 // use the interface IBarDataSet
-                List<IBarDataSet> dataSets = new ArrayList<>();
                 dataSets.add(tempSet);
                 BarData data = new BarData(dataSets);
-                data.setBarWidth(0.4f);
+                data.setBarWidth(1.67114899E12f);
                 chart.setData(data);
                 chart.setFitBars(true);
 
-                /*ValueFormatter formatter = new ValueFormatter(){
+                ValueFormatter formatter = new LargeValueFormatter(){
                     @Override
                     public String getFormattedValue(float value){
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM");
                         return sdf.format(value);
                     }
                 };
@@ -137,7 +130,7 @@ public class BarGraphFragment extends Fragment {
 
                 xAxis.setGranularity(1f);
                 xAxis.setAvoidFirstLastClipping(true);
-                xAxis.setValueFormatter(formatter);*/
+                xAxis.setValueFormatter(formatter);
                 chart.invalidate(); // refresh
             }
         };

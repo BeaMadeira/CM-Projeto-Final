@@ -121,6 +121,7 @@ public class LineGraphFragment extends Fragment {
             @Override
             public void onCompletedGetTemperatures(List<Temperature> result) {
                 List<Entry> entries = new ArrayList<>();
+
                 result.forEach(
                         temperature -> entries.add(
                                 new Entry(
