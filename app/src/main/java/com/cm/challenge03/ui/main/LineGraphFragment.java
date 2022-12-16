@@ -183,7 +183,6 @@ public class LineGraphFragment extends Fragment {
 
 
 
-        mainViewModel.getHumidities(tc);
 
 
         Switch sw = (Switch)  view.findViewById(R.id.switch1);
@@ -191,14 +190,32 @@ public class LineGraphFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
-                    Toast.makeText(getContext(),"checked",Toast.LENGTH_SHORT).show();
                     mainViewModel.getTemperatures(tc);
 
                 } else {
                     // The toggle is disabled
-                    Toast.makeText(getContext(),"not",Toast.LENGTH_SHORT).show();
                     LineData data = lc.getData();
                     ILineDataSet linedataset = data.getDataSetByLabel("Temperature",false);
+                    data.removeDataSet(linedataset);
+                    lc.setData(data);
+                    lc.invalidate();
+
+                }
+            }
+        });
+
+        Switch sw2 = (Switch)  view.findViewById(R.id.switch2);
+        sw2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+
+                    mainViewModel.getHumidities(tc);
+
+                } else {
+                    // The toggle is disabled
+                    LineData data = lc.getData();
+                    ILineDataSet linedataset = data.getDataSetByLabel("Humidity",false);
                     data.removeDataSet(linedataset);
                     lc.setData(data);
                     lc.invalidate();

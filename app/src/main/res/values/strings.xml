@@ -24,6 +24,7 @@
     <string name="option2">Averages</string>
     <string name="option3">Totals</string>
     <string name="option4">Values</string>
-    <string name="changes_title">Changes</string>
-    <string name="changes_sub">over time</string>
+    <string name="values_title">Values some title</string>
+    <string name="values_sub">Values some sub</string>
+    <string name="valores_grafico">Sensor Values</string>
 </resources>

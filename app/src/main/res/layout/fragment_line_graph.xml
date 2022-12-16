@@ -43,38 +43,55 @@
             android:switchMinWidth="56dp"
             android:layout_marginLeft="100dp"
             android:layout_marginTop="120dp"
-            android:text="Switch1:"
+            android:text="Temperate:"
             android:textColor="#fafafa"
-            android:checked="true"
-            android:textOff="OFF"
-            android:textOn="ON"
+            android:checked="false"
+            android:textOff="Hide"
+            android:textOn="Show"
             android:gravity="end"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout"
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"/>
+
+
+        <Switch
+            android:id="@+id/switch2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="228dp"
+            android:layout_marginBottom="4dp"
+            android:checked="false"
+            android:gravity="end"
+            android:switchMinWidth="56dp"
+            android:text="Humidity:"
+            android:textColor="#fafafa"
+            android:textOff="Hide"
+            android:textOn="Show"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/changes_title"
+            android:text="@string/valores_grafico"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:textColor="#fafafa"
             android:textSize="35sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+       <!-- <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/changes_sub"
+            android:text="@string/values_sub"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:textColor="#fafafa"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@+id/textView3"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-
+-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
