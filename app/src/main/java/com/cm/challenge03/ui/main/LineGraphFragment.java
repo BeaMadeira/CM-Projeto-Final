@@ -1,5 +1,6 @@
 package com.cm.challenge03.ui.main;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +30,7 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,17 +70,57 @@ public class LineGraphFragment extends Fragment {
         });
 
         LineChart lc = view.findViewById(R.id.lineChart);
-        List<Entry> entries = new ArrayList<>();
+
+        XAxis xAxis = lc.getXAxis();
+        List<ILineDataSet> dataSets = new ArrayList<>();
         TaskCallback tc = new TaskCallback() {
 
             @Override
             public void onCompletedInsertHumidity(List<Humidity> result) { }
             @Override
-            public void onCompletedGetHumidities(List<Humidity> result) { }
+            public void onCompletedGetHumidities(List<Humidity> result) {
+                List<Entry> entries = new ArrayList<>();
+                result.forEach(
+                        humidity -> entries.add(
+                                new Entry(
+                                        humidity.getTime(),
+                                        Float.parseFloat(humidity.getValue().toString()
+                                        )
+                                )
+                        ));
+
+                LineDataSet humSet = new LineDataSet(entries, "Humidity");
+                humSet.setLineWidth(3f);
+                humSet.setCircleRadius(6f);
+                humSet.setAxisDependency(YAxis.AxisDependency.RIGHT);
+
+                // use the interface ILineDataSet
+                dataSets.add(humSet);
+                LineData data = new LineData(dataSets);
+                lc.setData(data);
+
+                ValueFormatter formatter = new LargeValueFormatter(){
+                    @Override
+                    public String getFormattedValue(float value){
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.UK);
+                        return sdf.format(value);
+                    }
+                };
+
+                xAxis.setGranularity(1f);
+                xAxis.setAvoidFirstLastClipping(true);
+                xAxis.setValueFormatter(formatter);
+                lc.setDragEnabled(true);
+                lc.invalidate(); // refresh
+                // Disable the vertical grid lines
+
+            }
             @Override
             public void onCompletedInsertTemperature(List<Temperature> result) { }
             @Override
             public void onCompletedGetTemperatures(List<Temperature> result) {
+                List<Entry> entries = new ArrayList<>();
                 result.forEach(
                         temperature -> entries.add(
                                 new Entry(
@@ -88,11 +130,15 @@ public class LineGraphFragment extends Fragment {
                                 )
                         ));
 
-                LineDataSet tempSet = new LineDataSet(entries, "Company 1");
+                LineDataSet tempSet = new LineDataSet(entries, "Temperature");
+                tempSet.setLineWidth(3f);
+                tempSet.setCircleRadius(6f);
                 tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
+                tempSet.setCircleColor(Color.RED);
+                tempSet.setColor(Color.RED);
 
                 // use the interface ILineDataSet
-                List<ILineDataSet> dataSets = new ArrayList<>();
+
                 dataSets.add(tempSet);
                 LineData data = new LineData(dataSets);
                 lc.setData(data);
@@ -105,30 +151,42 @@ public class LineGraphFragment extends Fragment {
                         return sdf.format(value);
                     }
                 };
-                XAxis xAxis = lc.getXAxis();
 
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Long currentDayTimestamp = null;
+                try {
+                    currentDayTimestamp = sdf.parse(sdf.format(new Date())).getTime();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
                 xAxis.setGranularity(1f);
                 xAxis.setAvoidFirstLastClipping(true);
                 xAxis.setValueFormatter(formatter);
-                xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                xAxis.setGranularityEnabled(true);
+                float middleground = (currentDayTimestamp+(result.get(0).getTime()))*0.5f;
+                middleground += 5000000f;
+                xAxis.setAxisMinimum(middleground);
+
+                lc.setDragEnabled(true);
+
+                lc.setVisibleXRangeMaximum(result.get(0).getTime()*0.000007f);
 
                 lc.invalidate(); // refresh
+                // Disable the vertical grid lines
+
             }
         };
+
+
+
+        mainViewModel.getHumidities(tc);
         mainViewModel.getTemperatures(tc);
 
 
-        /*
-        Log.d("DEBUG", temps.toString());
+        xAxis.setGridLineWidth(1f);
+        lc.getAxisLeft().setDrawGridLines(false);
+        lc.getAxisRight().setDrawGridLines(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setGranularityEnabled(true);
 
-
-
-
-
-        LineDataSet dataSet = new LineDataSet(entries,"Label");
-        LineData lineData = new LineData(dataSet);
-        lc.setData(lineData);
-        lc.invalidate();*/
     }
 }
