@@ -198,7 +198,7 @@ public class LineGraphFragment extends Fragment {
                     // The toggle is disabled
                     Toast.makeText(getContext(),"not",Toast.LENGTH_SHORT).show();
                     LineData data = lc.getData();
-                    ILineDataSet linedataset = data.getDataSetByLabel("Temperatura",false);
+                    ILineDataSet linedataset = data.getDataSetByLabel("Temperature",false);
                     data.removeDataSet(linedataset);
                     lc.setData(data);
                     lc.invalidate();
