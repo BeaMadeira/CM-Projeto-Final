@@ -24,7 +24,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="#002DFF"
+
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Base_ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,10 +41,9 @@
         android:layout_height="150dp"
         android:layout_weight="1.5"
         android:background="@drawable/custom_rectangle"
-        android:backgroundTint="?attr/colorPrimary"
+        android:backgroundTint="#00ACFF"
         android:gravity="bottom"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
 
         <TextView
@@ -132,6 +132,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

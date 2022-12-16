@@ -71,19 +71,19 @@ public class FirstFragment extends Fragment {
             }
         });
         cards.add(view.findViewById(R.id.cardTotals));
-        cards.get(2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("DEBUG","CLICKED3");
-            }
-        });
-        cards.add(view.findViewById(R.id.cardValues));
-        cards.get(3).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("DEBUG","CLICKED4");
-            }
-        });
+//        cards.get(2).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("DEBUG","CLICKED3");
+//            }
+//        });
+//        cards.add(view.findViewById(R.id.cardValues));
+//        cards.get(3).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Log.d("DEBUG","CLICKED4");
+//            }
+//        });
 
     }
 }

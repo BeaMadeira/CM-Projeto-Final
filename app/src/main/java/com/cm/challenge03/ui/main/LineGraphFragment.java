@@ -2,6 +2,7 @@ package com.cm.challenge03.ui.main;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 
 import com.cm.challenge03.MainViewModel;
 import com.cm.challenge03.R;
@@ -190,11 +192,26 @@ public class LineGraphFragment extends Fragment {
 
 
         SwitchCompat sw = (SwitchCompat)  view.findViewById(R.id.switch1);
+        Observer<List<Temperature>> obsTemp = new Observer<List<Temperature>>() {
+            @Override
+            public void onChanged(List<Temperature> temperatures) {
+                mainViewModel.getTemperatures(tc);
+                Log.d("DEBUG","UPDATING Temp");
+            }
+        };
+        Observer<List<Humidity>> obsHum = new Observer<List<Humidity>>() {
+            @Override
+            public void onChanged(List<Humidity> humidy) {
+                mainViewModel.getHumidities(tc);
+                Log.d("DEBUG","UPDATING Hum");
+            }
+        };
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
-                    mainViewModel.getTemperatures(tc);
+                    mainViewModel.getTemperaturesList().observe(getViewLifecycleOwner(),obsTemp);
+
 
                 } else {
                     // The toggle is disabled
@@ -205,6 +222,7 @@ public class LineGraphFragment extends Fragment {
                         lc.clear();
                     else lc.setData(data);
                     lc.invalidate();
+                    mainViewModel.getTemperaturesList().removeObserver(obsTemp);
                 }
             }
         });
@@ -214,6 +232,7 @@ public class LineGraphFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
+                    mainViewModel.getHumiditiesList().observe(getViewLifecycleOwner(),obsHum);
 
                     mainViewModel.getHumidities(tc);
 
@@ -226,6 +245,7 @@ public class LineGraphFragment extends Fragment {
                         lc.clear();
                     else lc.setData(data);
                     lc.invalidate();
+                    mainViewModel.getHumiditiesList().removeObserver(obsHum);
 
                 }
             }

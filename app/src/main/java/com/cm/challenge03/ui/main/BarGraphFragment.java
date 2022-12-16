@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,6 +86,7 @@ public class BarGraphFragment extends Fragment {
 
         List<IBarDataSet> dataSets = new ArrayList<>();
 
+
         TaskCallback tc = new TaskCallback() {
 
             @Override
@@ -100,19 +102,22 @@ public class BarGraphFragment extends Fragment {
                 List<BarEntry> entries = new ArrayList<>();
                 Map<Long, Double> timeToAverageValueMap = result.stream()
                         .collect(Collectors.groupingBy(Temperature::squashTimestamp, Collectors.averagingDouble(Temperature::getValue)));
+
                 for (Map.Entry<Long, Double> entry : timeToAverageValueMap.entrySet()) {
                     Long time = entry.getKey();
                     Double averageValue = entry.getValue();
                     entries.add(new BarEntry(time,Float.parseFloat(averageValue.toString())));
                 }
 
+                //entries.add(new BarEntry(1671335200000f,-20f));
                 BarDataSet tempSet = new BarDataSet(entries, "Temperature");
                 tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
                 XAxis xAxis = chart.getXAxis();
                 // use the interface IBarDataSet
                 dataSets.add(tempSet);
                 BarData data = new BarData(dataSets);
-                data.setBarWidth(entries.get(0).getX()*0.6f);
+                if(entries.size() == 1)
+//                    data.setBarWidth(entries.get(0).getX()+1000000f);
 
                 chart.setData(data);
                 chart.setFitBars(true);
@@ -129,9 +134,11 @@ public class BarGraphFragment extends Fragment {
                 xAxis.setGranularity(1f);
                 xAxis.setAvoidFirstLastClipping(true);
                 xAxis.setValueFormatter(formatter);
+                chart.getAxisLeft().setAxisMinimum(0f);
                 chart.invalidate(); // refresh
             }
         };
+
         mainViewModel.getTemperatures(tc);
     }
 
