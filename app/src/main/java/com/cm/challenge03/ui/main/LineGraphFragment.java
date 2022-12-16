@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
@@ -185,7 +186,7 @@ public class LineGraphFragment extends Fragment {
 
 
 
-        Switch sw = (Switch)  view.findViewById(R.id.switch1);
+        SwitchCompat sw = (SwitchCompat)  view.findViewById(R.id.switch1);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
@@ -199,12 +200,11 @@ public class LineGraphFragment extends Fragment {
                     data.removeDataSet(linedataset);
                     lc.setData(data);
                     lc.invalidate();
-
                 }
             }
         });
 
-        Switch sw2 = (Switch)  view.findViewById(R.id.switch2);
+        SwitchCompat sw2 = (SwitchCompat)  view.findViewById(R.id.switch2);
         sw2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {

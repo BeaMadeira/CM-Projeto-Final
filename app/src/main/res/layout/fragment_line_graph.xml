@@ -36,14 +36,12 @@
         android:padding="16dp"
         >
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:switchMinWidth="56dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="120dp"
-            android:text="Temperate:"
+            android:text="Temperature "
             android:textColor="#fafafa"
             android:checked="false"
             android:textOff="Hide"
@@ -53,20 +51,20 @@
             app:layout_constraintBottom_toBottomOf="@+id/linearLayout"/>
 
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="228dp"
-            android:layout_marginBottom="4dp"
             android:checked="false"
             android:gravity="end"
             android:switchMinWidth="56dp"
-            android:text="Humidity:"
+            android:text="Humidity "
             android:textColor="#fafafa"
             android:textOff="Hide"
             android:textOn="Show"
+            android:layout_margin="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switch1"
             app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
 
         <TextView
