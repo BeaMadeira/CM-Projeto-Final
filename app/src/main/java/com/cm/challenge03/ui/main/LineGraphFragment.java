@@ -24,11 +24,14 @@ import com.cm.challenge03.database.entities.Temperature;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
 import com.cm.challenge03.ui.main.interfaces.TaskCallback;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
@@ -198,7 +201,9 @@ public class LineGraphFragment extends Fragment {
                     LineData data = lc.getData();
                     ILineDataSet linedataset = data.getDataSetByLabel("Temperature",false);
                     data.removeDataSet(linedataset);
-                    lc.setData(data);
+                    if(data.getEntryCount() == 0)
+                        lc.clear();
+                    else lc.setData(data);
                     lc.invalidate();
                 }
             }
@@ -217,18 +222,37 @@ public class LineGraphFragment extends Fragment {
                     LineData data = lc.getData();
                     ILineDataSet linedataset = data.getDataSetByLabel("Humidity",false);
                     data.removeDataSet(linedataset);
-                    lc.setData(data);
+                    if(data.getEntryCount() == 0)
+                        lc.clear();
+                    else lc.setData(data);
                     lc.invalidate();
 
                 }
             }
         });
-
+        ValueFormatter formatterTemp = new LargeValueFormatter(){
+            @Override
+            public String getFormattedValue(float value){
+                return value +" °C";
+            }
+        };
+        ValueFormatter formatterHum = new LargeValueFormatter(){
+            @Override
+            public String getFormattedValue(float value){
+                return value +"%";
+            }
+        };
         xAxis.setGridLineWidth(1f);
+        xAxis.setTextSize(13f);
         lc.getAxisLeft().setDrawGridLines(false);
+        lc.getAxisLeft().setTextSize(13f);
+        lc.getAxisLeft().setValueFormatter(formatterTemp);
+        lc.getAxisRight().setTextSize(13f);
+        lc.getAxisRight().setValueFormatter(formatterHum);
+        lc.setDescription(null);
         lc.getAxisRight().setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularityEnabled(true);
-
+        lc.setNoDataText("Select a value type to display chart");
     }
 }

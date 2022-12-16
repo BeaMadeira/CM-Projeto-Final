@@ -105,7 +105,6 @@ public class BarGraphFragment extends Fragment {
                     Double averageValue = entry.getValue();
                     entries.add(new BarEntry(time,Float.parseFloat(averageValue.toString())));
                 }
-                Log.d("DEBUG", entries.toString());
 
                 BarDataSet tempSet = new BarDataSet(entries, "Temperature");
                 tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
