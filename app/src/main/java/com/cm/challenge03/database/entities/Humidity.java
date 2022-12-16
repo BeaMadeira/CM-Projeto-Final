@@ -61,6 +61,7 @@ public class Humidity implements Serializable {
         this.value = value;
     }
 
+    public long getTime(){ return this.getDate().getTime(); }
     @NonNull
     @Override
 
