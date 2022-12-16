@@ -106,15 +106,15 @@ public class BarGraphFragment extends Fragment {
                     entries.add(new BarEntry(time,Float.parseFloat(averageValue.toString())));
                 }
                 Log.d("DEBUG", entries.toString());
-//                entries.add(new BarEntry(1.67114899E12f,30f));
 
                 BarDataSet tempSet = new BarDataSet(entries, "Temperature");
                 tempSet.setAxisDependency(YAxis.AxisDependency.LEFT);
-
+                XAxis xAxis = chart.getXAxis();
                 // use the interface IBarDataSet
                 dataSets.add(tempSet);
                 BarData data = new BarData(dataSets);
-                data.setBarWidth(1.67114899E12f);
+                data.setBarWidth(entries.get(0).getX()*0.6f);
+
                 chart.setData(data);
                 chart.setFitBars(true);
 
@@ -126,7 +126,6 @@ public class BarGraphFragment extends Fragment {
                         return sdf.format(value);
                     }
                 };
-                XAxis xAxis = chart.getXAxis();
 
                 xAxis.setGranularity(1f);
                 xAxis.setAvoidFirstLastClipping(true);
