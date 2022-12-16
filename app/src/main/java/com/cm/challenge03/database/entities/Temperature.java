@@ -1,5 +1,6 @@
 package com.cm.challenge03.database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -58,5 +59,16 @@ public class Temperature implements Serializable {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    public long getTime(){ return this.getDate().getTime(); }
+    @NonNull
+    @Override
+    public String toString() {
+        return "Temperature{" +
+                "uid=" + uid +
+                ", date=" + date +
+                ", value=" + value +
+                '}';
     }
 }

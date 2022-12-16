@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.FirstFragment">
+    android:orientation="vertical"
+    android:weightSum="7"
+    tools:context=".ui.main.FirstFragment"
+    android:background="#fafafa">
 
+
+    <!--    <ScrollView-->
+    <!--        android:id="@+id/scrollview"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/toolbar">-->
+
+    <!--    </ScrollView>-->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -19,14 +32,152 @@
         app:layout_constraintTop_toTopOf="parent"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <ScrollView
-        android:id="@+id/scrollview"
+
+    <!-- Grid menu -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" >
+        android:layout_height="150dp"
+        android:layout_weight="1.5"
+        android:background="@drawable/custom_rectangle"
+        android:backgroundTint="?attr/colorPrimary"
+        android:gravity="bottom"
+        android:padding="16dp"
+        >
 
-    </ScrollView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboard"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:textColor="#fafafa"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dashboard_sub"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:textColor="#fafafa"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_weight="6"
+        android:weightSum="2"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:weightSum="2"
+            android:padding="12dp"
+            tools:ignore="NestedWeights">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/cardChanges"
+                android:layout_weight="1"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="25dp"
+                android:layout_margin="12dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                tools:ignore="NestedWeights">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/option1"
+                    android:textAlignment="center"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    app:drawableTopCompat="@drawable/round_area_chart_24" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="25dp"
+                android:layout_margin="12dp"
+                android:id="@+id/cardAverages"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/option2"
+                    android:textAlignment="center"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    app:drawableTopCompat="@drawable/baseline_bar_chart_24" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:weightSum="2"
+            android:padding="12dp">
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="25dp"
+                android:layout_margin="12dp"
+                android:id="@+id/cardTotals"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/option3"
+                    android:textAlignment="center"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    app:drawableTopCompat="@drawable/baseline_pie_chart_24" />
+            </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="25dp"
+                android:layout_margin="12dp"
+                android:id="@+id/cardValues"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/option4"
+                    android:textAlignment="center"
+                    android:orientation="vertical"
+                    android:layout_gravity="center"
+                    app:drawableTopCompat="@drawable/baseline_assignment_24" />
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

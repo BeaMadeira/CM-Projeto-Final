@@ -2,8 +2,6 @@ package com.cm.challenge03;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -169,7 +167,14 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     @Override
     public void replaceFragment(Class<? extends Fragment> fragment, boolean addToBackStack) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction().replace(R.id.container, fragment, null);
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in,  // enter
+                        R.anim.fade_out,  // exit
+                        R.anim.fade_in,   // popEnter
+                        R.anim.slide_out  // popExit
+                )
+                .replace(R.id.container, fragment, null);
         if (addToBackStack) {
             transaction = transaction.addToBackStack(null);
         }

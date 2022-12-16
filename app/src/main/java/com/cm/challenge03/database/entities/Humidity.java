@@ -1,5 +1,6 @@
 package com.cm.challenge03.database.entities;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -58,5 +59,16 @@ public class Humidity implements Serializable {
 
     public void setValue(Double value) {
         this.value = value;
+    }
+
+    @NonNull
+    @Override
+
+    public String toString() {
+        return "Humidity{" +
+                "uid=" + uid +
+                ", date=" + date +
+                ", value=" + value +
+                '}';
     }
 }

@@ -18,4 +18,12 @@
     <string name="temperature_topic">cm/temperature</string>
     <string name="led_on">LED was Turned On</string>
     <string name="led_off">LED was Turned Off</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="dashboard_sub">Some subtitle here</string>
+     <string name="option1">Changes</string>
+    <string name="option2">Averages</string>
+    <string name="option3">Totals</string>
+    <string name="option4">Values</string>
+    <string name="values_title">Values some title</string>
+    <string name="values_sub">Values some sub</string>
 </resources>

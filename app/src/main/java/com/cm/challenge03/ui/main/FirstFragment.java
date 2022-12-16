@@ -1,6 +1,7 @@
 package com.cm.challenge03.ui.main;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,11 +11,15 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.cm.challenge03.MainViewModel;
 import com.cm.challenge03.R;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 // TODO: Add charts and plots
 // TODO: Change plot type?
@@ -47,5 +52,37 @@ public class FirstFragment extends Fragment {
             ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
             return true;
         });
+
+        List<CardView> cards = new ArrayList<>();
+        cards.add(view.findViewById(R.id.cardChanges));
+        cards.get(0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentChanger) requireActivity()).replaceFragment(LineGraphFragment.class, true);
+                Log.d("DEBUG","CLICKED1");
+            }
+        });
+        cards.add(view.findViewById(R.id.cardAverages));
+        cards.get(1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DEBUG","CLICKED2");
+            }
+        });
+        cards.add(view.findViewById(R.id.cardTotals));
+        cards.get(2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DEBUG","CLICKED3");
+            }
+        });
+        cards.add(view.findViewById(R.id.cardValues));
+        cards.get(3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DEBUG","CLICKED4");
+            }
+        });
+
     }
 }
