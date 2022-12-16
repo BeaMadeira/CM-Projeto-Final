@@ -13,4 +13,5 @@ public interface TaskCallback {
     void onCompletedInsertTemperature(List<Temperature> result);
 
     void onCompletedGetTemperatures(List<Temperature> result);
+
 }
