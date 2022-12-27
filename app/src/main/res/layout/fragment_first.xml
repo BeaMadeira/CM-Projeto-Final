@@ -24,7 +24,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#002DFF"
+        android:background="#FF5722"
 
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Base_ToolbarTheme"
@@ -41,7 +41,7 @@
         android:layout_height="150dp"
         android:layout_weight="1.5"
         android:background="@drawable/custom_rectangle"
-        android:backgroundTint="#00ACFF"
+        android:backgroundTint="#FF9800"
         android:gravity="bottom"
         android:padding="16dp">
 
@@ -61,7 +61,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/dashboard_sub"
+            android:text=""
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:textColor="#fafafa"
             android:textSize="20sp"
@@ -89,7 +89,7 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:id="@+id/cardChanges"
+                android:id="@+id/cardPlay"
                 android:layout_weight="1"
                 app:cardElevation="5dp"
                 app:cardCornerRadius="25dp"
@@ -116,7 +116,7 @@
                 app:cardElevation="5dp"
                 app:cardCornerRadius="25dp"
                 android:layout_margin="12dp"
-                android:id="@+id/cardAverages"
+                android:id="@+id/cardMultiplayer"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true">
@@ -132,7 +132,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -145,7 +144,7 @@
                 app:cardElevation="5dp"
                 app:cardCornerRadius="25dp"
                 android:layout_margin="12dp"
-                android:id="@+id/cardTotals"
+                android:id="@+id/cardHighscores"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true">
@@ -165,7 +164,7 @@
                 app:cardElevation="5dp"
                 app:cardCornerRadius="25dp"
                 android:layout_margin="12dp"
-                android:id="@+id/cardValues"
+                android:id="@+id/cardAccount"
                 android:foreground="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true">

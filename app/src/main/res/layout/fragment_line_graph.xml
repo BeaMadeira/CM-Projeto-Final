@@ -15,7 +15,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#002DFF"
+        android:background="#FF5722"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/Base_ToolbarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,38 +31,10 @@
         android:layout_height="150dp"
         android:layout_weight="1.5"
         android:background="@drawable/custom_rectangle"
-        android:backgroundTint="#00ACFF"
+        android:backgroundTint="#FF9800"
         android:gravity="bottom"
         android:padding="16dp"
         >
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Temperature "
-            android:textColor="#fafafa"
-            android:checked="false"
-            android:textOff="Hide"
-            android:textOn="Show"
-            android:gravity="end"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"/>
-
-
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/switch2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:gravity="end"
-            android:text="Humidity "
-            android:textColor="#fafafa"
-            android:textOff="Hide"
-            android:textOn="Show"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switch1"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
 
         <TextView
             android:id="@+id/textView3"
@@ -91,12 +63,94 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <GridLayout
+        android:id="@+id/game_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_weight="6"
-        android:id="@+id/lineChart"
-        android:layout_margin="10dp"/>
+        android:columnCount="3"
+        android:rowCount="3">
+
+        <Button
+            android:id="@+id/button_0_0"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_0_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_0_2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_1_0"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_1_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_1_2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_2_0"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_2_1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+        <Button
+            android:id="@+id/button_2_2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:text=" "
+            android:backgroundTint="#EDC487"
+            />
+
+    </GridLayout>
+    <Button
+        android:id="@+id/reset_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" Reset "
+        android:backgroundTint="#EA8E04"
+        />
+
 
 </LinearLayout>

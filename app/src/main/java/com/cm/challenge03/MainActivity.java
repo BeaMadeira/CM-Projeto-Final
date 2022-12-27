@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         super.onCreate(savedInstanceState);
         mainViewModel = getViewModel(MainViewModel.class);
         setContentView(R.layout.activity_main);
-        createNotificationChannel();
+        //createNotificationChannel();
         if (savedInstanceState == null) {
             addFragment(FirstFragment.class, false);
         }
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         helper.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
-                Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
+                /*Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
                 subscribe(getResources().getString(R.string.led_status_topic));
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 publish(getResources().getString(R.string.led_topic), Boolean.toString(sharedPreferences.getBoolean("led", false)));
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                 }
                 if (sharedPreferences.getBoolean("temperature", true)) {
                     subscribe(getResources().getString(R.string.temperature_topic));
-                }
+                }*/
             }
 
             @Override
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                if (topic.equals(getResources().getString(R.string.led_status_topic))) {
+               /* if (topic.equals(getResources().getString(R.string.led_status_topic))) {
                     String content = new String(message.getPayload());
                     if (content.equals("true")) {
                         Toast.makeText(getApplicationContext(), R.string.led_on, Toast.LENGTH_SHORT).show();
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
                         notificationManager.notify(notificationId++, builder.build());
                     }
-                }
+                }*/
             }
 
             @Override
@@ -136,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         helper.connect();
     }
 
-    // https://developer.android.com/develop/ui/views/notifications/build-notification
+/*    // https://developer.android.com/develop/ui/views/notifications/build-notification
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
-    }
+    }*/
 
 
     @Override

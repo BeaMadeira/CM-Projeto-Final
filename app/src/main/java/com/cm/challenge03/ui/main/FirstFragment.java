@@ -54,36 +54,40 @@ public class FirstFragment extends Fragment {
         });
 
         List<CardView> cards = new ArrayList<>();
-        cards.add(view.findViewById(R.id.cardChanges));
+        cards.add(view.findViewById(R.id.cardPlay));
         cards.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((FragmentChanger) requireActivity()).replaceFragment(LineGraphFragment.class, true);
+                ((FragmentChanger) requireActivity()).replaceFragment(SinglePlayerFragment.class, true);
                 Log.d("DEBUG","CLICKED1");
             }
         });
-        cards.add(view.findViewById(R.id.cardAverages));
+        cards.add(view.findViewById(R.id.cardMultiplayer));
         cards.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((FragmentChanger) requireActivity()).replaceFragment(BarGraphFragment.class, true);
+                ((FragmentChanger) requireActivity()).replaceFragment(MultiPlayerFragment.class, true);
                 Log.d("DEBUG","CLICKED2");
             }
         });
-        cards.add(view.findViewById(R.id.cardTotals));
-//        cards.get(2).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("DEBUG","CLICKED3");
-//            }
-//        });
-//        cards.add(view.findViewById(R.id.cardValues));
-//        cards.get(3).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Log.d("DEBUG","CLICKED4");
-//            }
-//        });
+        cards.add(view.findViewById(R.id.cardHighscores));
+        cards.get(2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentChanger) requireActivity()).replaceFragment(HighScoresFragment.class, true);
+
+                Log.d("DEBUG","CLICKED3");
+            }
+        });
+        cards.add(view.findViewById(R.id.cardAccount));
+        cards.get(3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentChanger) requireActivity()).replaceFragment(AccountFragment.class, true);
+
+                Log.d("DEBUG","CLICKED4");
+            }
+        });
 
     }
 }

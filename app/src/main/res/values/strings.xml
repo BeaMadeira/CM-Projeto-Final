@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DHT Sensor</string>
+    <string name="app_name">Tik-Tak-Toe</string>
     <string name="channel_name">Temperature</string>
     <string name="channel_description">Temperature</string>
     <string name="settings">Settings</string>
@@ -18,13 +18,16 @@
     <string name="temperature_topic">cm/temperature</string>
     <string name="led_on">LED was Turned On</string>
     <string name="led_off">LED was Turned Off</string>
-    <string name="dashboard">Dashboard</string>
+    <string name="dashboard">Tik-Tak-Toe</string>
     <string name="dashboard_sub">Sensor data</string>
-    <string name="option1">Changes</string>
-    <string name="option2">Averages</string>
-    <string name="option3">Totals</string>
-    <string name="option4">Values</string>
-    <string name="changes_title">Values some title</string>
-    <string name="changes_sub">Values some sub</string>
-    <string name="valores_grafico">Sensor Values</string>
+    <string name="option1">Play</string>
+    <string name="option2">Multiplayer</string>
+    <string name="option3">Highscores</string>
+    <string name="option4">Account</string>
+    <string name="changes_title">Multiplayer</string>
+    <string name="changes_sub">Wait to match with other player!</string>
+    <string name="valores_grafico">Joguinho giro ihihih</string>
+    <string name="conta">Account Settings</string>
+    <string name="scores_title">HighScores</string>
+
 </resources>
