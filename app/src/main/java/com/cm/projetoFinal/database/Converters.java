@@ -1,4 +1,4 @@
-package com.cm.challenge03.database;
+package com.cm.projetoFinal.database;
 
 import androidx.room.TypeConverter;
 

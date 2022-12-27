@@ -1,4 +1,4 @@
-package com.cm.challenge03.ui.main;
+package com.cm.projetoFinal.ui.main;
 
 import android.os.Bundle;
 
@@ -13,11 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cm.challenge03.MainViewModel;
-import com.cm.challenge03.R;
-import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.MainViewModel;
+import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
-public class AccountFragment extends Fragment {
+public class HighScoresFragment extends Fragment {
+
     private MainViewModel mainViewModel;
 
     @Override
@@ -29,7 +30,7 @@ public class AccountFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_account, container, false);
+        return inflater.inflate(R.layout.fragment_high_scores, container, false);
     }
 
     @Override

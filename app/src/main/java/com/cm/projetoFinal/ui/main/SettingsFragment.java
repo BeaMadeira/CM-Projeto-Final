@@ -1,9 +1,7 @@
-package com.cm.challenge03.ui.main;
+package com.cm.projetoFinal.ui.main;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -11,9 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.cm.challenge03.R;
-import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
-import com.cm.challenge03.ui.main.interfaces.MQTTInterface;
+import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 
 import java.util.Objects;
 

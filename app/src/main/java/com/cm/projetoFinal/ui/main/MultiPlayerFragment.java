@@ -1,4 +1,4 @@
-package com.cm.challenge03.ui.main;
+package com.cm.projetoFinal.ui.main;
 
 import android.os.Bundle;
 
@@ -13,24 +13,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cm.challenge03.MainViewModel;
-import com.cm.challenge03.R;
-import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.MainViewModel;
+import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
-public class HighScoresFragment extends Fragment {
-
+public class MultiPlayerFragment extends Fragment {
     private MainViewModel mainViewModel;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mainViewModel = ((FragmentChanger) requireActivity()).getViewModel(MainViewModel.class);
+    public MultiPlayerFragment() {
+        // Required empty public constructor
     }
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_high_scores, container, false);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainViewModel = ((FragmentChanger) requireActivity()).getViewModel(MainViewModel.class);
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_bar_graph, container, false);
     }
 
     @Override
@@ -50,4 +55,5 @@ public class HighScoresFragment extends Fragment {
 
 
     }
+
 }

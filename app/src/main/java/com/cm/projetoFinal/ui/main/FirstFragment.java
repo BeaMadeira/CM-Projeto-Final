@@ -1,4 +1,4 @@
-package com.cm.challenge03.ui.main;
+package com.cm.projetoFinal.ui.main;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,9 +14,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import com.cm.challenge03.MainViewModel;
-import com.cm.challenge03.R;
-import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.MainViewModel;
+import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
 import java.util.ArrayList;
 import java.util.List;

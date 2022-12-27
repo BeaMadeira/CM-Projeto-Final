@@ -1,4 +1,4 @@
-package com.cm.challenge03;
+package com.cm.projetoFinal;
 
 import org.junit.Test;
 

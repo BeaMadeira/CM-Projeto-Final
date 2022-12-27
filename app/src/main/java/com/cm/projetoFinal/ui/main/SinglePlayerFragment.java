@@ -1,4 +1,4 @@
-package com.cm.challenge03.ui.main;
+package com.cm.projetoFinal.ui.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,9 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import com.cm.challenge03.MainViewModel;
-import com.cm.challenge03.R;
-import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.MainViewModel;
+import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
 // TODO: Add charts and plots
 // TODO: Change plot type?

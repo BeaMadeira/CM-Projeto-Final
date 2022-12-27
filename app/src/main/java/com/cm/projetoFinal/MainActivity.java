@@ -1,4 +1,4 @@
-package com.cm.challenge03;
+package com.cm.projetoFinal;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -10,10 +10,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.cm.challenge03.database.entities.Humidity;
-import com.cm.challenge03.ui.main.FirstFragment;
-import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
-import com.cm.challenge03.ui.main.interfaces.MQTTInterface;
+import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.database.entities.Profile;
+import com.cm.projetoFinal.ui.main.FirstFragment;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;

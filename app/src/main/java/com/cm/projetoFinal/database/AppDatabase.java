@@ -1,4 +1,4 @@
-package com.cm.challenge03.database;
+package com.cm.projetoFinal.database;
 
 import android.content.Context;
 
@@ -7,9 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.cm.challenge03.database.dao.HumidityDao;
-import com.cm.challenge03.database.entities.Humidity;
-import com.cm.challenge03.database.entities.Profile;
+import com.cm.projetoFinal.database.dao.ProfileDao;
+import com.cm.projetoFinal.database.entities.Profile;
 
 @Database(entities = {Profile.class}, exportSchema = false, version = 1)
 @TypeConverters({Converters.class})
@@ -24,5 +23,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract HumidityDao humidityDao();
+    public abstract ProfileDao profileDao();
 }

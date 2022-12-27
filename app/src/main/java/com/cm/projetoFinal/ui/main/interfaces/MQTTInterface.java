@@ -1,4 +1,4 @@
-package com.cm.challenge03.ui.main.interfaces;
+package com.cm.projetoFinal.ui.main.interfaces;
 
 public interface MQTTInterface {
     void subscribe(String topic);
