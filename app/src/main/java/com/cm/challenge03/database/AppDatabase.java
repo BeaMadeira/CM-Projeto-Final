@@ -9,8 +9,9 @@ import androidx.room.TypeConverters;
 
 import com.cm.challenge03.database.dao.HumidityDao;
 import com.cm.challenge03.database.entities.Humidity;
+import com.cm.challenge03.database.entities.Profile;
 
-@Database(entities = {Humidity.class, Temperature.class}, exportSchema = false, version = 1)
+@Database(entities = {Profile.class}, exportSchema = false, version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "arduino_db";
@@ -24,6 +25,4 @@ public abstract class AppDatabase extends RoomDatabase {
     }
 
     public abstract HumidityDao humidityDao();
-
-    public abstract TemperatureDao temperatureDao();
 }
