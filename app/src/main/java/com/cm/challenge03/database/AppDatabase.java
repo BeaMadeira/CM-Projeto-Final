@@ -8,9 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.cm.challenge03.database.dao.HumidityDao;
-import com.cm.challenge03.database.dao.TemperatureDao;
 import com.cm.challenge03.database.entities.Humidity;
-import com.cm.challenge03.database.entities.Temperature;
 
 @Database(entities = {Humidity.class, Temperature.class}, exportSchema = false, version = 1)
 @TypeConverters({Converters.class})

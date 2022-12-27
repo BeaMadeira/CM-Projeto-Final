@@ -11,14 +11,18 @@ import java.sql.Blob;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.UUID;
 
-@Entity(tableName = "Profiles")
+@Entity(tableName = "Profile")
 public class Profile implements Serializable {
-    @PrimaryKey(autoGenerate = true)
-    private int uid;
+    @PrimaryKey(autoGenerate = false)
+    private UUID uid;
 
     @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name="username")
+    private String username;
 
     @ColumnInfo(name = "foto")
     private Blob foto;
@@ -29,12 +33,13 @@ public class Profile implements Serializable {
 
     @Ignore
     public Profile(String Name, Blob foto) {
+        this.uid = UUID.randomUUID();
         this.name=name;
         this.foto=foto;
     }
 
     @Ignore
-    public Profile(int uid,String Name, Blob foto) {
+    public Profile(UUID uid,String Name, Blob foto) {
         this.uid = uid;
         this.name=name;
         this.foto=foto;

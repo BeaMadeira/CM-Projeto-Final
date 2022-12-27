@@ -1,24 +1,16 @@
 package com.cm.challenge03;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.preference.PreferenceManager;
 
 import com.cm.challenge03.database.entities.Humidity;
-import com.cm.challenge03.database.entities.Temperature;
 import com.cm.challenge03.ui.main.FirstFragment;
 import com.cm.challenge03.ui.main.interfaces.FragmentChanger;
 import com.cm.challenge03.ui.main.interfaces.MQTTInterface;
@@ -28,8 +20,6 @@ import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import java.util.Date;
 
 // ARDUINO PROJECT: https://wokwi.com/projects/348786713380782674
 

@@ -8,10 +8,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.cm.challenge03.database.entities.Humidity;
-import com.cm.challenge03.database.entities.Temperature;
 import com.cm.challenge03.database.repositories.HumidityRepository;
-import com.cm.challenge03.database.repositories.TemperatureRepository;
-import com.cm.challenge03.ui.main.interfaces.GenericTaskCallback;
 import com.cm.challenge03.ui.main.interfaces.TaskCallback;
 
 import java.util.ArrayList;
