@@ -1,5 +1,6 @@
 package com.cm.projetoFinal;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
 
 import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.database.entities.Profile;
@@ -36,6 +38,11 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         super.onCreate(savedInstanceState);
         mainViewModel = getViewModel(MainViewModel.class);
         setContentView(R.layout.activity_main);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        if (sharedPreferences.getBoolean("firstrun", true)) {
+            Toast.makeText(getApplicationContext(), "Welcome to the app!", Toast.LENGTH_LONG).show();
+            sharedPreferences.edit().putBoolean("firstrun", false).apply();
+        }
         //createNotificationChannel();
         if (savedInstanceState == null) {
             addFragment(FirstFragment.class, false);
@@ -48,9 +55,10 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         helper.setCallback(new MqttCallbackExtended() {
             @Override
             public void connectComplete(boolean reconnect, String serverURI) {
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+
                 /*Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
                 subscribe(getResources().getString(R.string.led_status_topic));
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 publish(getResources().getString(R.string.led_topic), Boolean.toString(sharedPreferences.getBoolean("led", false)));
                 if (sharedPreferences.getBoolean("humidity", true)) {
                     subscribe(getResources().getString(R.string.humidity_topic));

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Tik-Tak-Toe</string>
+    <string name="app_name">Tic-Tac-Toe</string>
     <string name="channel_name">Temperature</string>
     <string name="channel_description">Temperature</string>
     <string name="settings">Settings</string>
@@ -18,7 +18,7 @@
     <string name="temperature_topic">cm/temperature</string>
     <string name="led_on">LED was Turned On</string>
     <string name="led_off">LED was Turned Off</string>
-    <string name="dashboard">Tik-Tak-Toe</string>
+    <string name="dashboard">Menu</string>
     <string name="dashboard_sub">Sensor data</string>
     <string name="option1">Play</string>
     <string name="option2">Multiplayer</string>

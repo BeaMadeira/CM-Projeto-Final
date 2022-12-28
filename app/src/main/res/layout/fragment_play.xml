@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/valuesGraph"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#fafafa"
+    android:orientation="vertical"
+    android:weightSum="7"
+    tools:context=".ui.main.FirstFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FF5722"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/Base_ToolbarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+
+    <!-- Grid menu -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_weight="1.5"
+        android:background="@drawable/custom_rectangle"
+        android:backgroundTint="#FF9800"
+        android:gravity="bottom"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/valores_grafico"
+            android:textAppearance="@android:style/TextAppearance.Material.Headline"
+            android:textColor="#fafafa"
+            android:textSize="35sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="6"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:padding="12dp"
+            android:weightSum="2"
+            tools:ignore="NestedWeights">
+
+            <GridLayout
+                android:id="@+id/game_board"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center"
+                android:columnCount="3"
+                android:rowCount="3"
+                tools:ignore="UselessParent">
+
+                <Button
+                    android:id="@+id/button_0_0"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_0_1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_0_2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_1_0"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_1_1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_1_2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_2_0"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_2_1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+                <Button
+                    android:id="@+id/button_2_2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#EDC487"
+                    android:text=" "
+                    tools:ignore="HardcodedText" />
+
+            </GridLayout>
+
+            <Button
+                android:id="@+id/reset_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="12dp"
+                android:backgroundTint="#EA8E04"
+                android:gravity="center"
+                android:text="Reset" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
