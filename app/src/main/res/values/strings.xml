@@ -29,5 +29,6 @@
     <string name="valores_grafico">Joguinho giro ihihih</string>
     <string name="conta">Account Settings</string>
     <string name="scores_title">HighScores</string>
+    <string name="conta_nome_title">Username</string>
 
 </resources>

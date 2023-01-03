@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.cm.projetoFinal.database.dao.ProfileDao;
 import com.cm.projetoFinal.database.entities.Profile;
 
-@Database(entities = {Profile.class}, exportSchema = false, version = 1)
+@Database(entities = {Profile.class}, exportSchema = false, version = 3)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "arduino_db";

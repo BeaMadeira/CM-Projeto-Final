@@ -3,6 +3,7 @@ package com.cm.projetoFinal.database.repositories;
 import android.app.Application;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -29,7 +30,7 @@ public class ProfileRepository {
 
     public void getProfile(TaskCallback taskCallback) {
         executor.execute(() -> {
-            Profile profiles = profileDao.getProfile();
+            List<Profile> profiles = profileDao.getProfile();
             handler.post(() -> {
                 taskCallback.onCompleted(profiles);
             });
@@ -40,6 +41,7 @@ public class ProfileRepository {
         executor.execute(() -> {
             Long uid = profileDao.insertProfile(profile);
             Profile resprofile = profileDao.getProfileById(uid);
+            Log.d("DEBUG","profile\n"+resprofile.toString());
             handler.post(() -> {
                 taskCallback.onCompleted(resprofile);
             });
@@ -50,9 +52,9 @@ public class ProfileRepository {
     public void updateProfile(TaskCallback taskCallback, Profile profile) {
         executor.execute(() -> {
             Integer n = profileDao.updateProfile(profile);
-            Profile resprofile = profileDao.getProfile();
+            List<?> res = profileDao.getProfile();
             handler.post(() -> {
-                taskCallback.onCompleted(resprofile);
+                taskCallback.onCompleted(res);
             });
         });
     }

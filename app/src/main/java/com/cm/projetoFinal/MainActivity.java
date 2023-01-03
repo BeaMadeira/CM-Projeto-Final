@@ -15,6 +15,7 @@ import androidx.preference.PreferenceManager;
 import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.database.entities.Profile;
 import com.cm.projetoFinal.ui.main.FirstFragment;
+import com.cm.projetoFinal.ui.main.FirstFragmentCreateProfile;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 
@@ -41,12 +42,17 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getBoolean("firstrun", true)) {
             Toast.makeText(getApplicationContext(), "Welcome to the app!", Toast.LENGTH_LONG).show();
-            sharedPreferences.edit().putBoolean("firstrun", false).apply();
+            if (savedInstanceState == null) {
+                addFragment(FirstFragmentCreateProfile.class, false);
+            }
+        }else{
+            if(savedInstanceState==null)
+                addFragment(FirstFragment.class, false);
         }
         //createNotificationChannel();
-        if (savedInstanceState == null) {
-            addFragment(FirstFragment.class, false);
-        }
+       // if (savedInstanceState == null) {
+            //addFragment(FirstFragment.class, false);
+       // }
 
         String clientId = MqttClient.generateClientId();
 
@@ -227,4 +233,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         super.onDestroy();
         helper.stop();
     }
+
+
+
 }

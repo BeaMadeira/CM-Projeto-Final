@@ -21,9 +21,6 @@ import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Add charts and plots
-// TODO: Change plot type?
-// TODO: Select time interval?
 public class FirstFragment extends Fragment {
     private MainViewModel mainViewModel;
 

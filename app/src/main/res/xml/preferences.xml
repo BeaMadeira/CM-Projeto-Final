@@ -28,7 +28,7 @@
 
     <PreferenceCategory
         app:key="notifications_category"
-        app:title="Notifications" >
+        app:title="Notifications">
 
         <EditTextPreference
             app:key="humidity_notification"

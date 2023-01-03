@@ -13,10 +13,10 @@ import java.util.UUID;
 
 @Dao
 public interface ProfileDao {
-    @Query("SELECT * FROM Profile LIMIT 1")
-    Profile getProfile();
+    @Query("SELECT * FROM Profile")
+    List<Profile> getProfile();
 
-    @Query("SELECT * FROM Profile WHERE uid IN (:ProfileId)")
+    @Query("SELECT * FROM Profile WHERE uid = :ProfileId")
     Profile getProfileById(Long ProfileId);
 
     @Insert
