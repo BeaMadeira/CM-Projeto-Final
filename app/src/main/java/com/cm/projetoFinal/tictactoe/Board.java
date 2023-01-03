@@ -102,20 +102,7 @@ public class Board {
                 break;
             }
         }
-        if (diagWin) {
-            return true;
-        }
-        return false;
-    }
-
-    //apply a move at x,y, returns true if move was valid, false otherwise
-    public boolean move(char symbol, int x, int y) {
-        if (board[x][y] == ' ') {
-            board[x][y] = symbol;
-            return true;
-        } else {
-            return false;
-        }
+        return diagWin;
     }
 
     @Override
@@ -123,17 +110,18 @@ public class Board {
         if (this == o) return true;
         if (!(o instanceof Board)) return false;
         Board board1 = (Board) o;
-        return getSize() == board1.getSize() && Arrays.equals(getBoard(), board1.getBoard());
+        return getSize() == board1.getSize() && Arrays.deepEquals(getBoard(), board1.getBoard());
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hash(getSize());
-        result = 31 * result + Arrays.hashCode(getBoard());
+        result = 31 * result + Arrays.deepHashCode(getBoard());
         return result;
     }
 
     //to string should display the board with [ ] around each row and | between each column
+    @NonNull
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -151,6 +139,19 @@ public class Board {
             }
         }
         return sb.toString();
+    }
+
+    //Make a toast based on function above
+    public String getWinnerToast(Agent agent) {
+        if (isWinner(agent.getSymbol())) {
+            return "Player " + agent.getSymbol() + " wins!";
+        } else if (isWinner(agent.getOpponentSymbol())) {
+            return "Player " + agent.getOpponentSymbol() + " wins!";
+        } else if (isFull()) {
+            return "It's a draw!";
+        } else {
+            return "Continue playing";
+        }
     }
 
 }

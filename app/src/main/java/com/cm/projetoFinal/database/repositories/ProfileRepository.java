@@ -13,7 +13,6 @@ import com.cm.projetoFinal.database.entities.Profile;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -32,7 +31,7 @@ public class ProfileRepository {
         executor.execute(() -> {
             List<Profile> profiles = profileDao.getProfile();
             handler.post(() -> {
-                taskCallback.onCompleted(profiles);
+                taskCallback.onSuccess(profiles);
             });
         });
     }
@@ -43,7 +42,7 @@ public class ProfileRepository {
             Profile resprofile = profileDao.getProfileById(uid);
             Log.d("DEBUG","profile\n"+resprofile.toString());
             handler.post(() -> {
-                taskCallback.onCompleted(resprofile);
+                taskCallback.onSuccess(resprofile);
             });
         });
     }
@@ -54,7 +53,7 @@ public class ProfileRepository {
             Integer n = profileDao.updateProfile(profile);
             List<?> res = profileDao.getProfile();
             handler.post(() -> {
-                taskCallback.onCompleted(res);
+                taskCallback.onSuccess(res);
             });
         });
     }
