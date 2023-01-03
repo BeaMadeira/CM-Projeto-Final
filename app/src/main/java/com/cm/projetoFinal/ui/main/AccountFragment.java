@@ -73,6 +73,16 @@ public class AccountFragment extends Fragment {
             // sharedPreferences.edit().putBoolean("firstrun", false).apply();
         EditText username = view.findViewById(R.id.textView4);
 
+        mainViewModel.getAllProfile(new TaskCallback() {
+            @Override
+            public <T> void onSuccess(T result) {
+                List<Profile> profiles = (List<Profile>) result;
+                if(profiles.size()==1){
+                    mainViewModel.setProfile(profiles.get(0));
+                    username.setText(mainViewModel.getProfile().getUsername());
+                }
+            }
+        });
 
 
         image_button = view.findViewById(R.id.imageButton);
@@ -92,54 +102,44 @@ public class AccountFragment extends Fragment {
                 //preferences.edit().putBoolean("firstrun", false).apply();
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-                TaskCallback tc = new TaskCallback() {
-                    @Override
-                    public <T> void onCompleted(T result) {
-                        Profile res = (Profile) result;
-                        mainViewModel.setProfile(res);
-                    }
-                };
-
                 String name=username.getText().toString();
-                Profile profile = new Profile();
-                profile.setUsername(name);
-                mainViewModel.createProfile(tc,profile);
-                profile = mainViewModel.getProfile();
-                //Toast.makeText(getContext(),profile.getUsername(),Toast.LENGTH_SHORT).show();
-                /*boolean flag = false;
+
+                //when the result from all profiles arrives
                 TaskCallback tc = new TaskCallback() {
                     @Override
-                    public <T> void onCompleted(T result) {
+                    public <T> void onSuccess(T result) {
                         List<Profile> profiles = (List<Profile>) result;
-                        if(profiles.size() == 1)
-                            mainViewModel.setProfile(profiles.get(0));
-                        else mainViewModel.setProfile(null);
+                        //we check if theres only one profile, if there is we update it
+                        if(profiles.size()==1){
+                            Profile profile = profiles.get(0);
+                            mainViewModel.setProfile(profile);
+                            profile.setUsername(name);
+                            mainViewModel.updateProfile(new TaskCallback() {
+                                @Override
+                                public <T> void onSuccess(T result) {
+                                    //we save the updated profile
+                                    List<Profile> profiles = (List<Profile>) result;
+                                    if(profiles.size()==1)
+                                        mainViewModel.setProfile(profiles.get(0));
+                                    Toast.makeText(getContext(), "Profile updated", Toast.LENGTH_SHORT).show();
+                                }
+                            }, profile);
+                            //if there is no profiles we create a new one and save it
+                        } else if(profiles.size()==0) {
+                            Profile profile = new Profile();
+                            profile.setUsername(name);
+                            mainViewModel.createProfile(new TaskCallback() {
+                                @Override
+                                public <T> void onSuccess(T result) {
+                                    Toast.makeText(getContext(), "Profile made", Toast.LENGTH_SHORT).show();
+                                }
+                            }, profile);
+                        }
                     }
                 };
-                if(mainViewModel.getAllProfile(tc)==null) {
-                    profile = new Profile();
-                    flag = true;
-                }
-                else profile = mainViewModel.getProfile();
-                profile.setUsername("test");
-                Toast.makeText(getContext(),profile.getUsername() == null ? "Null" : profile.getUsername(),Toast.LENGTH_SHORT).show();
-                TaskCallback tcUpdate = new TaskCallback() {
-                    @Override
-                    public <T> void onCompleted(T result) {
-                        List<Profile> profiles = (List<Profile>) result;
-                        if (profiles.size() == 1) {
-                            Profile res = profiles.get(0);
-                            mainViewModel.setProfile(res);
-                            Log.d("DEBUG",res.getUsername());
-                            Toast.makeText(getContext(), res.getUid().toString(), Toast.LENGTH_SHORT).show();
-                        } else
-                            mainViewModel.setProfile(null);
+                //we check for all profiles
+                mainViewModel.getAllProfile(tc);
 
-                    }
-                };
-                if(!flag)
-                    mainViewModel.createProfile(profile);
-                else mainViewModel.updateProfile(tcUpdate, profile);*/
                 sharedPreferences.edit().putBoolean("firstrun", false).apply();
 
                 ((FragmentChanger) requireActivity()).replaceFragment(FirstFragment.class, true);

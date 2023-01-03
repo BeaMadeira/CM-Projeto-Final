@@ -53,5 +53,24 @@ public class Profile implements Serializable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Profile profile = (Profile) o;
+        return uid.equals(profile.uid) && Objects.equals(username, profile.username);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(uid, username);
+    }
+
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "uid=" + uid +
+                ", username='" + username + '\'' +
+                '}';
+    }
 }

@@ -40,7 +40,6 @@ public class ProfileRepository {
         executor.execute(() -> {
             Long uid = profileDao.insertProfile(profile);
             Profile resprofile = profileDao.getProfileById(uid);
-            Log.d("DEBUG","profile\n"+resprofile.toString());
             handler.post(() -> {
                 taskCallback.onSuccess(resprofile);
             });
