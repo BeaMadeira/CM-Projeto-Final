@@ -30,5 +30,6 @@
     <string name="conta">Account Settings</string>
     <string name="scores_title">HighScores</string>
     <string name="conta_nome_title">Username</string>
+    <string name="reset">Reset</string>
 
 </resources>

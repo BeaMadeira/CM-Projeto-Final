@@ -19,4 +19,5 @@
     <string name="temperature_topic">cm/temperature</string>
     <string name="led_on">LED was Turned On</string>
     <string name="led_off">LED was Turned Off</string>
+    <string name="reset">Reset</string>
 </resources>

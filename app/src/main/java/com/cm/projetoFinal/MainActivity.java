@@ -12,8 +12,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 
-import com.cm.projetoFinal.R;
-import com.cm.projetoFinal.database.entities.Profile;
 import com.cm.projetoFinal.ui.main.FirstFragment;
 import com.cm.projetoFinal.ui.main.FirstFragmentCreateProfile;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
@@ -30,7 +28,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 // TODO: Refactor code to make it more modular and readable
 public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface {
     private final static String CHANNEL_ID = "CHALLENGE03";
-    private int notificationId = 0;
+    private final int notificationId = 0;
     private MainViewModel mainViewModel;
     private MQTTHelper helper;
 
@@ -45,14 +43,14 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             if (savedInstanceState == null) {
                 addFragment(FirstFragmentCreateProfile.class, false);
             }
-        }else{
-            if(savedInstanceState==null)
+        } else {
+            if (savedInstanceState == null)
                 addFragment(FirstFragment.class, false);
         }
         //createNotificationChannel();
-       // if (savedInstanceState == null) {
-            //addFragment(FirstFragment.class, false);
-       // }
+        // if (savedInstanceState == null) {
+        //addFragment(FirstFragment.class, false);
+        // }
 
         String clientId = MqttClient.generateClientId();
 
@@ -233,7 +231,6 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         super.onDestroy();
         helper.stop();
     }
-
 
 
 }

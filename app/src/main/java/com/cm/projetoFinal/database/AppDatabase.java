@@ -13,7 +13,7 @@ import com.cm.projetoFinal.database.entities.Profile;
 @Database(entities = {Profile.class}, exportSchema = false, version = 3)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
-    private static final String DB_NAME = "arduino_db";
+    private static final String DB_NAME = "project_db";
     private static AppDatabase instance;
 
     public static synchronized AppDatabase getInstance(Context context) {

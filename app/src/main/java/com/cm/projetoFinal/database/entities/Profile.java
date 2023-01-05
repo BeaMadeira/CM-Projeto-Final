@@ -7,10 +7,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
-import java.sql.Blob;
-import java.util.Date;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity(tableName = "Profile")
 public class Profile implements Serializable {
@@ -18,7 +15,7 @@ public class Profile implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private Long uid;
 
-    @ColumnInfo(name="username")
+    @ColumnInfo(name = "username")
     private String username;
 
     public Profile() {
@@ -26,14 +23,14 @@ public class Profile implements Serializable {
     }
 
     @Ignore
-    public Profile( String username) {
-        this.username=username;
+    public Profile(String username) {
+        this.username = username;
     }
 
     @Ignore
-    public Profile(Long uid,String Name, String username, String email) {
+    public Profile(Long uid, String Name, String username, String email) {
         this.uid = uid;
-        this.username=username;
+        this.username = username;
     }
 
     public Long getUid() {
@@ -68,9 +65,6 @@ public class Profile implements Serializable {
 
     @Override
     public String toString() {
-        return "Profile{" +
-                "uid=" + uid +
-                ", username='" + username + '\'' +
-                '}';
+        return "Profile{" + "uid=" + uid + ", username='" + username + '\'' + '}';
     }
 }

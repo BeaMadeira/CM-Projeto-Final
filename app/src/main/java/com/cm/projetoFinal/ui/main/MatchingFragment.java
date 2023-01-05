@@ -1,41 +1,38 @@
 package com.cm.projetoFinal.ui.main;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
 import com.cm.projetoFinal.MainViewModel;
 import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
-public class MultiPlayerFragment extends Fragment {
+public class MatchingFragment extends Fragment {
     private MainViewModel mainViewModel;
 
-    public MultiPlayerFragment() {
-        // Required empty public constructor
+    public MatchingFragment() {
+
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel = ((FragmentChanger) requireActivity()).getViewModel(MainViewModel.class);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_multiplayer, container, false);
+        return inflater.inflate(R.layout.fragment_matching, container, false);
     }
 
     @Override
@@ -51,9 +48,5 @@ public class MultiPlayerFragment extends Fragment {
             ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
             return true;
         });
-
-
-
     }
-
 }

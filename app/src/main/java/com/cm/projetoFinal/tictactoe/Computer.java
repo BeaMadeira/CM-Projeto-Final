@@ -15,7 +15,7 @@ public class Computer implements Agent {
         //check if board is full
         if (board.isFull()) {
             return null;
-        }  else {
+        } else {
             //check if there is a winning move
             for (int i = 0; i < board.getSize(); i++) {
                 for (int j = 0; j < board.getSize(); j++) {
