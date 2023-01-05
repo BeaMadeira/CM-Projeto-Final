@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.MutableLiveData;
 
 import com.cm.projetoFinal.database.entities.Profile;
 import com.cm.projetoFinal.database.repositories.ProfileRepository;
@@ -19,20 +20,32 @@ import java.util.List;
 public class MainViewModel extends AndroidViewModel {
     private final ProfileRepository profileRepository;
 
-    private Profile profile;
+    private MutableLiveData<Profile> profile = new MutableLiveData<>();
     private Board board;
     private int currentPlayer;
     //array of agents, player or computer, order determines the turn
     private List<Agent> agents;
+    private String oponentTopic;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
         profileRepository = new ProfileRepository(application);
+        /*profileRepository.getProfile(new TaskCallback() {
+            @Override
+            public <T> void onSuccess(T result) {
+                List<Profile> profiles = (List<Profile>) result;
+                profile.setValue(profiles.get(0));
+            }
+        });*/
     }
 
     private char getRandomSymbol() {
-        if (Math.random() < 0.5) return 'X';
-        else return 'O';
+        if (Math.random() < 0.5) {
+            return 'X';
+        }
+        else {
+            return 'O';
+        }
     }
 
     public void createProfile(TaskCallback tc, Profile profile) {
@@ -40,21 +53,19 @@ public class MainViewModel extends AndroidViewModel {
     }
 
     public Profile getProfile() {
-        return profile;
+        return profile.getValue();
     }
 
     public void setProfile(Profile profile) {
-        this.profile = profile;
+        this.profile.setValue(profile);
     }
 
     public Profile getAllProfile(TaskCallback tc) {
-
         profileRepository.getProfile(tc);
         return getProfile();
     }
 
     public void updateProfile(TaskCallback tc, Profile profile) {
-
         profileRepository.updateProfile(tc, profile);
     }
 
@@ -85,6 +96,10 @@ public class MainViewModel extends AndroidViewModel {
         callback.onSuccess(player);
     }
 
+    public void multiplayerGame() {
+
+    }
+
     //reset board
     public void resetBoard(TaskCallback callback) {
         startSinglePlayerGame(callback);
@@ -101,5 +116,13 @@ public class MainViewModel extends AndroidViewModel {
 
     public Board getBoard() {
         return board;
+    }
+
+    public String getOponentTopic() {
+        return oponentTopic;
+    }
+
+    public void setOponentTopic(String oponentTopic) {
+        this.oponentTopic = oponentTopic;
     }
 }

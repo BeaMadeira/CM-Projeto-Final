@@ -12,6 +12,8 @@
     <string name="connected">Connected</string>
     <string name="connection_lost">Connection Lost</string>
     <string name="connection_not_established">Connection not Established</string>
+    <string name="tiktaktoe_room">tiktaktoe/room</string>
+    <string name="tiktaktoe_leave">tiktaktoe/leave</string>
     <string name="led_topic">cm/led</string>
     <string name="led_status_topic">cm/led/status</string>
     <string name="humidity_topic">cm/humidity</string>
@@ -31,5 +33,6 @@
     <string name="scores_title">HighScores</string>
     <string name="conta_nome_title">Username</string>
     <string name="reset">Reset</string>
+    <string name="tiktaktoe">tiktaktoe</string>
 
 </resources>

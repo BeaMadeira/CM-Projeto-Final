@@ -24,9 +24,7 @@ import com.cm.projetoFinal.tictactoe.Computer;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
-// TODO: Add charts and plots
-// TODO: Change plot type?
-// TODO: Select time interval?
+
 public class SinglePlayerFragment extends Fragment {
     private MainViewModel mainViewModel;
     private final TaskCallback tc = new TaskCallback() {
@@ -38,7 +36,7 @@ public class SinglePlayerFragment extends Fragment {
             } else {
                 Toast.makeText(requireContext(), "Computer's turn", Toast.LENGTH_SHORT).show();
             }
-            updateBoard(  mainViewModel.getBoard());
+            updateBoard(mainViewModel.getBoard());
         }
     };
 
