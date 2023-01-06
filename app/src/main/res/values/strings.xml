@@ -34,5 +34,9 @@
     <string name="conta_nome_title">Username</string>
     <string name="reset">Reset</string>
     <string name="tiktaktoe">tiktaktoe</string>
+    <string name="username">Username</string>
+    <string name="account">Account</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
 
 </resources>
