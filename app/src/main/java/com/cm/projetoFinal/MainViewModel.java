@@ -108,6 +108,33 @@ public class MainViewModel extends AndroidViewModel {
         callback.onSuccess(player);
     }
 
+    //this method is called when the user clicks on the single player button
+    public void startMultiPlayerGame(@NonNull TaskCallback callback) {
+        agents = new ArrayList<>();
+        // Get a random symbol for the player
+        char symbol = getRandomSymbol();
+        // Create a player with the symbol
+        Player player = new Player(symbol);
+        // Create a computer with the opposite symbol
+        Player player2 = new Player(player.getOpponentSymbol());
+        // Whichever agent has the X symbol goes first
+        agents.add(player);
+        agents.add(player2);
+        if (player.getSymbol() == 'X' && player2.getSymbol() == 'O') currentPlayer = 0;
+        else currentPlayer = 1;
+
+        //create a board with the size 3
+        board = new Board(3);
+
+        if (currentPlayer == 1) {
+            player2.move(board, 0, 0);
+            currentPlayer = 0;
+        }
+
+        //call the callback method
+        callback.onSuccess(player);
+    }
+
     public void multiplayerGame() {
 
     }

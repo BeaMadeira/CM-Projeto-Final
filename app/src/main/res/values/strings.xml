@@ -12,7 +12,8 @@
     <string name="connected">Connected</string>
     <string name="connection_lost">Connection Lost</string>
     <string name="connection_not_established">Connection not Established</string>
-    <string name="tiktaktoe_room">tiktaktoe/room</string>
+    <string name="tiktaktoe_room_enter">tiktaktoe/room/enter</string>
+    <string name="tiktaktoe_room_leave">tiktaktoe/room/leave</string>
     <string name="tiktaktoe_leave">tiktaktoe/leave</string>
     <string name="led_topic">cm/led</string>
     <string name="led_status_topic">cm/led/status</string>

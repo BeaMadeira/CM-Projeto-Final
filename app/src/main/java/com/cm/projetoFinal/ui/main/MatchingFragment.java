@@ -15,8 +15,10 @@ import androidx.fragment.app.Fragment;
 
 import com.cm.projetoFinal.MainViewModel;
 import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
+import com.google.firebase.auth.FirebaseUser;
 
 //TODO Send message with users uid to the topic tiktaktoe/room
 //TODO Wait for message sent to topic tiktaktoe/<uid> with the <uid> of the other player
@@ -56,10 +58,11 @@ public class MatchingFragment extends Fragment {
         });
 
         //TODO Get user profile uid
-        //String uid = mainViewModel.getProfile().getUid().toString();
-        String uid = "user1";
-        //Toast.makeText(requireActivity().getApplicationContext(), uid, Toast.LENGTH_SHORT).show();
-        // Publish user id to the topic tiktaktoe/room
-        ((MQTTInterface) requireActivity()).publish(getResources().getString(R.string.tiktaktoe_room), uid);
+        FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            // TODO Publish user id to the topic tiktaktoe/room/enter
+            ((MQTTInterface) requireActivity()).publish(getResources().getString(R.string.tiktaktoe_room_enter), uid);
+        }
     }
 }

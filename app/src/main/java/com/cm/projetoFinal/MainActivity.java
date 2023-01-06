@@ -80,11 +80,12 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             public void connectComplete(boolean reconnect, String serverURI) {
                 Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
 
-                // TODO Get user profile uid
-                //String uid = mainViewModel.getProfile().getUid().toString();
-                String uid = "user1";
-                // Subscribe to topic tiktaktoe/<uid>
-                subscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
+                // TODO Subscribe to topic tiktaktoe/<uid>
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    String uid = user.getUid();
+                    subscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
+                }
             }
 
             @Override
@@ -94,15 +95,16 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
             @Override
             public void messageArrived(String topic, MqttMessage message) {
-                // TODO Get user profile uid
-                //String uid = mainViewModel.getProfile().getUid().toString();
-                String uid = "user1";
-                if (topic.equals(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid))) {
-                    String content = new String(message.getPayload());
-                    mainViewModel.setOponentTopic(content);
-                    Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
-                    popBackStack();
-                    replaceFragment(MultiPlayerFragment.class, true);
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    String uid = user.getUid();
+                    if (topic.equals(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid))) {
+                        String content = new String(message.getPayload());
+                        mainViewModel.setOponentTopic(content);
+                        Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
+                        popBackStack();
+                        replaceFragment(MultiPlayerFragment.class, true);
+                    }
                 }
             }
 
@@ -241,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Authentication Failed",
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -251,8 +253,14 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
     @Override
     public void signOut() {
-        mAuth.signOut();
-        updateUI(null);
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            // TODO Unsubscribe topic tiktaktoe/<uid>
+            String uid = user.getUid();
+            unsubscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
+            mAuth.signOut();
+            updateUI(null);
+        }
     }
 
     @Override
@@ -264,6 +272,9 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             replaceFragment(FirstFragment.class, true);
+            // TODO Subscribe to topic tiktaktoe/<uid>
+            String uid = user.getUid();
+            subscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
         }
         else {
             replaceFragment(LoginFragment.class, false);
