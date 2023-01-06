@@ -9,6 +9,8 @@ public interface Authentication {
 
     void signIn(String email, String password);
 
+    void signOut();
+
     void reload();
 
     void updateUI(FirebaseUser user);

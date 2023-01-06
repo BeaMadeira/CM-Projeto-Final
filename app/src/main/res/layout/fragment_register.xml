@@ -53,7 +53,7 @@
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/email"
+            android:id="@+id/email_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -61,22 +61,15 @@
             android:autofillHints="@string/email" />
 
         <EditText
-            android:id="@+id/password"
+            android:id="@+id/password_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
-            android:inputType="textVisiblePassword"
-            android:autofillHints="@string/password" />
-
-        <EditText
-            android:id="@+id/password_retry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textVisiblePassword"
+            android:inputType="textPassword"
             android:autofillHints="@string/password" />
 
         <Button
+            android:id="@+id/register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register" />

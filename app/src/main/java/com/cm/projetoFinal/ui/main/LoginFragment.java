@@ -1,7 +1,6 @@
 package com.cm.projetoFinal.ui.main;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,16 +12,12 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.cm.projetoFinal.MainViewModel;
 import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LoginFragment extends Fragment {
     private MainViewModel mainViewModel;
@@ -43,9 +38,10 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        Button login = view.findViewById(R.id.login);
         EditText email = view.findViewById(R.id.email_login);
         EditText password = view.findViewById(R.id.password_login);
+        Button login = view.findViewById(R.id.login);
+        Button register = view.findViewById(R.id.go_to_register);
 
         toolbar.setTitle(R.string.app_name);
         toolbar.inflateMenu(R.menu.menu);
@@ -57,11 +53,8 @@ public class LoginFragment extends Fragment {
             return true;
         });
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((Authentication) requireActivity()).signIn(email.getText().toString(), password.getText().toString());
-            }
-        });
+        login.setOnClickListener(v -> ((Authentication) requireActivity()).signIn(email.getText().toString(), password.getText().toString()));
+
+        register.setOnClickListener(v -> ((FragmentChanger) requireActivity()).replaceFragment(RegisterFragment.class, true));
     }
 }

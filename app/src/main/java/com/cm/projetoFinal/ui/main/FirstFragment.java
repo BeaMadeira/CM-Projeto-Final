@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.cm.projetoFinal.MainViewModel;
 import com.cm.projetoFinal.R;
+import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
 import java.util.ArrayList;
@@ -47,6 +48,12 @@ public class FirstFragment extends Fragment {
         MenuItem settings = menu.findItem(R.id.settings);
         settings.setOnMenuItemClickListener(item -> {
             ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
+            return true;
+        });
+
+        MenuItem signOut = menu.findItem(R.id.sign_out);
+        signOut.setOnMenuItemClickListener(item -> {
+            ((Authentication) requireActivity()).signOut();
             return true;
         });
 

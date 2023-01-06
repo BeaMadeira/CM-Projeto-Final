@@ -250,6 +250,12 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     }
 
     @Override
+    public void signOut() {
+        mAuth.signOut();
+        updateUI(null);
+    }
+
+    @Override
     public void reload() {
 
     }
@@ -258,6 +264,9 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void updateUI(FirebaseUser user) {
         if (user != null) {
             replaceFragment(FirstFragment.class, true);
+        }
+        else {
+            replaceFragment(LoginFragment.class, false);
         }
     }
 
