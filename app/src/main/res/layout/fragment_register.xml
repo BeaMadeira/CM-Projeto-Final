@@ -37,7 +37,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/login"
+            android:text="@string/register"
             android:textAppearance="@android:style/TextAppearance.Material.Headline"
             android:textColor="#fafafa"
             android:textSize="35sp"
@@ -53,7 +53,7 @@
         android:orientation="vertical" >
 
         <EditText
-            android:id="@+id/email_login"
+            android:id="@+id/email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -61,21 +61,22 @@
             android:autofillHints="@string/email" />
 
         <EditText
-            android:id="@+id/password_login"
+            android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/password"
-            android:inputType="textPassword"
+            android:inputType="textVisiblePassword"
+            android:autofillHints="@string/password" />
+
+        <EditText
+            android:id="@+id/password_retry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:inputType="textVisiblePassword"
             android:autofillHints="@string/password" />
 
         <Button
-            android:id="@+id/login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/login" />
-
-        <Button
-            android:id="@+id/go_to_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/register" />

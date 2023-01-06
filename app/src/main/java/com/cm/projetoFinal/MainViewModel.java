@@ -1,6 +1,8 @@
 package com.cm.projetoFinal;
 
 import android.app.Application;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -12,12 +14,21 @@ import com.cm.projetoFinal.tictactoe.Agent;
 import com.cm.projetoFinal.tictactoe.Board;
 import com.cm.projetoFinal.tictactoe.Computer;
 import com.cm.projetoFinal.tictactoe.Player;
+import com.cm.projetoFinal.ui.main.FirstFragment;
+import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 public class MainViewModel extends AndroidViewModel {
+    private Application application;
     private final ProfileRepository profileRepository;
 
     private MutableLiveData<Profile> profile = new MutableLiveData<>();
@@ -29,6 +40,7 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        this.application = application;
         profileRepository = new ProfileRepository(application);
         /*profileRepository.getProfile(new TaskCallback() {
             @Override
