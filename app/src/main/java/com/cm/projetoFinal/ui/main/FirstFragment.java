@@ -45,12 +45,6 @@ public class FirstFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
-        MenuItem settings = menu.findItem(R.id.settings);
-        settings.setOnMenuItemClickListener(item -> {
-            ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
-            return true;
-        });
-
         MenuItem signOut = menu.findItem(R.id.sign_out);
         signOut.setOnMenuItemClickListener(item -> {
             ((Authentication) requireActivity()).signOut();

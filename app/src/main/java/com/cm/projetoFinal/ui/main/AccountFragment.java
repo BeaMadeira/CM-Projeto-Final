@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.cm.projetoFinal.MainViewModel;
 import com.cm.projetoFinal.R;
-import com.cm.projetoFinal.database.entities.Profile;
+//import com.cm.projetoFinal.database.entities.Profile;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
@@ -63,13 +63,7 @@ public class AccountFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
-        MenuItem settings = menu.findItem(R.id.settings);
-        settings.setOnMenuItemClickListener(item -> {
-            ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
-            return true;
-        });
-
-        //butao save profile -->
+        /* butao save profile -->
             // sharedPreferences.edit().putBoolean("firstrun", false).apply();
         EditText username = view.findViewById(R.id.textView4);
 
@@ -148,7 +142,7 @@ public class AccountFragment extends Fragment {
 
 
                 }
-        });
+        });*/
     }
 
     private void imageChooser() {

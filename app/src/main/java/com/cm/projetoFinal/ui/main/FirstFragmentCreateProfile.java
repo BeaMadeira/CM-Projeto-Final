@@ -47,12 +47,6 @@ public class FirstFragmentCreateProfile extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
-        MenuItem settings = menu.findItem(R.id.settings);
-        settings.setOnMenuItemClickListener(item -> {
-            ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
-            return true;
-        });
-
         List<CardView> cards = new ArrayList<>();
         cards.add(view.findViewById(R.id.cardAccount));
         cards.get(0).setOnClickListener(new View.OnClickListener() {

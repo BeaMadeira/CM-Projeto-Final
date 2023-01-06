@@ -7,10 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.cm.projetoFinal.database.dao.ProfileDao;
-import com.cm.projetoFinal.database.entities.Profile;
+import com.cm.projetoFinal.database.dao.TopicDao;
+import com.cm.projetoFinal.database.entities.Topic;
 
-@Database(entities = {Profile.class}, exportSchema = false, version = 3)
+@Database(entities = {Topic.class}, exportSchema = false, version = 4)
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "project_db";
@@ -23,5 +23,5 @@ public abstract class AppDatabase extends RoomDatabase {
         return instance;
     }
 
-    public abstract ProfileDao profileDao();
+    public abstract TopicDao topicDao();
 }

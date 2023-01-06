@@ -1,37 +1,21 @@
 package com.cm.projetoFinal;
 
 import android.app.Application;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.MutableLiveData;
 
-import com.cm.projetoFinal.database.entities.Profile;
-import com.cm.projetoFinal.database.repositories.ProfileRepository;
 import com.cm.projetoFinal.tictactoe.Agent;
 import com.cm.projetoFinal.tictactoe.Board;
 import com.cm.projetoFinal.tictactoe.Computer;
 import com.cm.projetoFinal.tictactoe.Player;
-import com.cm.projetoFinal.ui.main.FirstFragment;
-import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 public class MainViewModel extends AndroidViewModel {
-    private Application application;
-    private final ProfileRepository profileRepository;
 
-    private MutableLiveData<Profile> profile = new MutableLiveData<>();
     private Board board;
     private int currentPlayer;
     //array of agents, player or computer, order determines the turn
@@ -40,45 +24,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
-        this.application = application;
-        profileRepository = new ProfileRepository(application);
-        /*profileRepository.getProfile(new TaskCallback() {
-            @Override
-            public <T> void onSuccess(T result) {
-                List<Profile> profiles = (List<Profile>) result;
-                profile.setValue(profiles.get(0));
-            }
-        });*/
     }
 
     private char getRandomSymbol() {
         if (Math.random() < 0.5) {
             return 'X';
-        }
-        else {
+        } else {
             return 'O';
         }
-    }
-
-    public void createProfile(TaskCallback tc, Profile profile) {
-        profileRepository.insertProfile(tc, profile);
-    }
-
-    public Profile getProfile() {
-        return profile.getValue();
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile.setValue(profile);
-    }
-
-    public Profile getAllProfile(TaskCallback tc) {
-        profileRepository.getProfile(tc);
-        return getProfile();
-    }
-
-    public void updateProfile(TaskCallback tc, Profile profile) {
-        profileRepository.updateProfile(tc, profile);
     }
 
     //this method is called when the user clicks on the single player button

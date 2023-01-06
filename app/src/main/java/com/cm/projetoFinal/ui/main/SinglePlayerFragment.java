@@ -21,6 +21,7 @@ import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.tictactoe.Agent;
 import com.cm.projetoFinal.tictactoe.Board;
 import com.cm.projetoFinal.tictactoe.Computer;
+import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
@@ -60,9 +61,9 @@ public class SinglePlayerFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
-        MenuItem settings = menu.findItem(R.id.settings);
-        settings.setOnMenuItemClickListener(item -> {
-            ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
+        MenuItem signOut = menu.findItem(R.id.sign_out);
+        signOut.setOnMenuItemClickListener(item -> {
+            ((Authentication) requireActivity()).signOut();
             return true;
         });
 

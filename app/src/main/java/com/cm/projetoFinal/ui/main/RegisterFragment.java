@@ -51,12 +51,6 @@ public class RegisterFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
-        MenuItem settings = menu.findItem(R.id.settings);
-        settings.setOnMenuItemClickListener(item -> {
-            ((FragmentChanger) requireActivity()).replaceFragment(SettingsFragment.class, true);
-            return true;
-        });
-
         register.setOnClickListener(v -> ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString()));
     }
 }
