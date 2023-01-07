@@ -66,27 +66,15 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     private MQTTHelper helper;
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
-    private int numTopics;
+    private Topic topic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainViewModel = getViewModel(MainViewModel.class);
         setContentView(R.layout.activity_main);
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-        // Access a Cloud Firestore instance from your Activity
         db = FirebaseFirestore.getInstance();
-        /*SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        if (sharedPreferences.getBoolean("firstrun", true)) {
-            Toast.makeText(getApplicationContext(), "Welcome to the app!", Toast.LENGTH_LONG).show();
-            if (savedInstanceState == null) {
-                addFragment(FirstFragmentCreateProfile.class, false);
-            }
-        } else {
-            if (savedInstanceState == null)
-                addFragment(FirstFragment.class, false);
-        }*/
 
         if (isSignIn()) {
             if (savedInstanceState == null) {
@@ -108,12 +96,25 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             public void connectComplete(boolean reconnect, String serverURI) {
                 Toast.makeText(getApplicationContext(), R.string.connected, Toast.LENGTH_SHORT).show();
 
-                // TODO Subscribe to topic tiktaktoe/<uid>
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     String uid = user.getUid();
+                    String userTopic = getResources().getString(R.string.tiktaktoe).concat("/").concat(uid);
+                    String userGameTopic = getResources().getString(R.string.tiktaktoe).concat("/game/").concat(uid);
+
                     mainViewModel.getAllTopics(MainActivity.this);
-                    subscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
+
+                    // TODO Subscribe to topic tiktaktoe/<uid>
+                    mainViewModel.getTopic(MainActivity.this, userTopic);
+                    if (topic == null) {
+                        subscribe(userTopic);
+                    }
+
+                    // TODO Subscribe to topic tiktaktoe/game/<uid>
+                    mainViewModel.getTopic(MainActivity.this, userGameTopic);
+                    if (topic == null) {
+                        subscribe(userGameTopic);
+                    }
                 }
             }
 
@@ -127,32 +128,33 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     String uid = user.getUid();
-                    if (topic.equals(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid))) {
-                        if (mainViewModel.isPlaying()) {
-                            // The content is a position on the board
-                            Position position = SerializationUtils.deserialize(message.getPayload());
-                            mainViewModel.playOpponent(position);
-                            MultiPlayerFragment multiPlayerFragment = (MultiPlayerFragment) getSupportFragmentManager().findFragmentByTag("MULTIPLAYER");
-                            if (multiPlayerFragment != null && multiPlayerFragment.isVisible()) {
-                                multiPlayerFragment.updateBoard(mainViewModel.getBoard());
-                                multiPlayerFragment.enableButtons();
-                                multiPlayerFragment.verifyGameCondition();
-                            }
+                    String userTopic = getResources().getString(R.string.tiktaktoe).concat("/").concat(uid);
+                    String userGameTopic = getResources().getString(R.string.tiktaktoe).concat("/game/").concat(uid);
+
+                    if (topic.equals(userTopic)) {
+                        // The content the matching result
+                        String content = new String(message.getPayload());
+                        try {
+                            JSONObject match = new JSONObject(content);
+                            mainViewModel.setOponentTopic(match.getString("topic"));
+                            mainViewModel.setSymbol(match.getString("symbol").charAt(0));
+                            mainViewModel.setPlaying(true);
+                            popBackStack();
+                            replaceFragment(MultiPlayerFragment.class, "MULTIPLAYER", true);
                         }
-                        else {
-                            // The content the matching result
-                            String content = new String(message.getPayload());
-                            try {
-                                JSONObject match = new JSONObject(content);
-                                mainViewModel.setOponentTopic(match.getString("topic"));
-                                mainViewModel.setSymbol(match.getString("symbol").charAt(0));
-                                mainViewModel.setPlaying(true);
-                                popBackStack();
-                                replaceFragment(MultiPlayerFragment.class, "MULTIPLAYER", true);
-                            }
-                            catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                        catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(topic.equals(userGameTopic)) {
+                        // The content is a position on the board
+                        Position position = SerializationUtils.deserialize(message.getPayload());
+                        mainViewModel.playOpponent(position);
+                        MultiPlayerFragment multiPlayerFragment = (MultiPlayerFragment) getSupportFragmentManager().findFragmentByTag("MULTIPLAYER");
+                        if (multiPlayerFragment != null && multiPlayerFragment.isVisible()) {
+                            multiPlayerFragment.updateBoard(mainViewModel.getBoard());
+                            multiPlayerFragment.enableButtons();
+                            multiPlayerFragment.verifyGameCondition();
                         }
                     }
                 }
@@ -555,7 +557,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
     @Override
     public <T> void onCompletedGetTopic(T result) {
-
+        topic = (Topic) result;
     }
 
     @Override
