@@ -20,9 +20,13 @@ import com.cm.projetoFinal.MainViewModel;
 import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RegisterFragment extends Fragment {
     private MainViewModel mainViewModel;
@@ -49,6 +53,16 @@ public class RegisterFragment extends Fragment {
 
         toolbar.setTitle(R.string.app_name);
 
-        register.setOnClickListener(v -> ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString()));
+        register.setOnClickListener(v -> {
+                ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString());
+                FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                Map<String, Object> data = new HashMap<>();
+                data.put("win",0);
+                data.put("loss",0);
+                data.put("draw",0);
+                data.put("username","");
+                db.collection("users").document(user.getUid()).update(data);
+            });
     }
 }
