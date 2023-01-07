@@ -161,6 +161,7 @@ public class AccountFragment extends Fragment {
 
 
         Button saveProfile = view.findViewById(R.id.profile_button);
+
         saveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
