@@ -2,6 +2,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!-- TODO: Add menu loged in -->
+    <!-- TODO: Add menu not loged in -->
     <!--<item android:id="@+id/settings"
         android:title="@string/settings"
         app:showAsAction="never"/>-->

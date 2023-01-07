@@ -48,8 +48,6 @@ public class RegisterFragment extends Fragment {
         Button register = view.findViewById(R.id.register);
 
         toolbar.setTitle(R.string.app_name);
-        toolbar.inflateMenu(R.menu.menu);
-        Menu menu = toolbar.getMenu();
 
         register.setOnClickListener(v -> ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString()));
     }

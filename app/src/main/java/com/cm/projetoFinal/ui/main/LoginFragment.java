@@ -44,14 +44,6 @@ public class LoginFragment extends Fragment {
         Button register = view.findViewById(R.id.go_to_register);
 
         toolbar.setTitle(R.string.app_name);
-        toolbar.inflateMenu(R.menu.menu);
-        Menu menu = toolbar.getMenu();
-
-        MenuItem signOut = menu.findItem(R.id.sign_out);
-        signOut.setOnMenuItemClickListener(item -> {
-            ((Authentication) requireActivity()).signOut();
-            return true;
-        });
 
         login.setOnClickListener(v -> ((Authentication) requireActivity()).signIn(email.getText().toString(), password.getText().toString()));
 
