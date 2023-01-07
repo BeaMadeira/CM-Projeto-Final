@@ -110,6 +110,10 @@ public class MainViewModel extends AndroidViewModel {
         return agents.get(currentPlayer);
     }
 
+    public Agent getPlayer() {
+        return agents.get(0);
+    }
+
     public Board getBoard() {
         return board;
     }
