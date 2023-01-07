@@ -22,7 +22,9 @@ import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RegisterFragment extends Fragment {
     private MainViewModel mainViewModel;
@@ -43,12 +45,22 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+        EditText username = view.findViewById(R.id.username_register);
         EditText email = view.findViewById(R.id.email_register);
         EditText password = view.findViewById(R.id.password_register);
         Button register = view.findViewById(R.id.register);
 
         toolbar.setTitle(R.string.app_name);
-
-        register.setOnClickListener(v -> ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString()));
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Map<String, Object> data = new HashMap<>();
+                data.put("win", 0);
+                data.put("loss", 0);
+                data.put("draw", 0);
+                data.put("username", username.getText().toString());
+                ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString(), data);
+            }
+        });
     }
 }
