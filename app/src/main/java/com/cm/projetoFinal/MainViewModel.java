@@ -44,6 +44,11 @@ public class MainViewModel extends AndroidViewModel {
         topicRepository.getAllTopics(callback);
     }
 
+    public void getTopic(TaskCallbackTopic callback, String topic) {
+        Log.w("DEBUG", "----------------getTopic--------------");
+        topicRepository.getTopic(callback, topic);
+    }
+
     public void deleteTopicByName(TaskCallbackTopic callback, String topic) {
         Log.w("DEBUG", "----------------deleteTopics--------------");
         topicRepository.deleteTopic(callback, topic);
