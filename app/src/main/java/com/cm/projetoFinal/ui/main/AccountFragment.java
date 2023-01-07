@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
+import androidx.room.Database;
 
 import android.provider.MediaStore;
 import android.util.Log;
@@ -36,6 +37,7 @@ import com.cm.projetoFinal.R;
 //import com.cm.projetoFinal.database.entities.Profile;
 import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.ui.main.interfaces.RemoteDbInterface;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -127,12 +129,25 @@ public class AccountFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+        EditText username = view.findViewById(R.id.username_edit);
         toolbar.setTitle(R.string.app_name);
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
 
-        EditText username = view.findViewById(R.id.textView4);
+        MenuItem signOut = menu.findItem(R.id.sign_out);
+        signOut.setOnMenuItemClickListener(item -> {
+            ((Authentication) requireActivity()).signOut();
+            return true;
+        });
+
+        FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
+        ((RemoteDbInterface) requireActivity()).getUsername(new TaskCallback() {
+            @Override
+            public <T> void onSuccess(T result) {
+                username.setText((String) result);
+            }
+        });
 
 
         FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();

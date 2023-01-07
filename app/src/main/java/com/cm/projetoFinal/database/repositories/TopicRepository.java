@@ -34,6 +34,13 @@ public class TopicRepository {
         });
     }
 
+    public void getTopic(TaskCallbackTopic callback, String topic) {
+        executor.execute(() -> {
+            Topic tempTopic = topicDao.getTopic(topic);
+            handler.post(() -> callback.onCompletedGetTopic(tempTopic));
+        });
+    }
+
     public void insertTopics(TaskCallbackTopic callback, Topic... topics) {
         executor.execute(() -> {
             try {
@@ -59,6 +66,13 @@ public class TopicRepository {
                 handler.post(callback::onNullPointer);
             }
 
+        });
+    }
+
+    public void deleteAllTopics(TaskCallbackTopic callback) {
+        executor.execute(() -> {
+            topicDao.deleteAllTopics();
+            handler.post(() -> {});
         });
     }
 }

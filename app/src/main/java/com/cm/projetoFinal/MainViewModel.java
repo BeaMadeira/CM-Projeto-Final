@@ -1,22 +1,26 @@
 package com.cm.projetoFinal;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 
+import com.cm.projetoFinal.database.entities.Topic;
+import com.cm.projetoFinal.database.repositories.TopicRepository;
 import com.cm.projetoFinal.tictactoe.Agent;
 import com.cm.projetoFinal.tictactoe.Board;
 import com.cm.projetoFinal.tictactoe.Computer;
 import com.cm.projetoFinal.tictactoe.Player;
 import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
+import com.cm.projetoFinal.ui.main.interfaces.TaskCallbackTopic;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
-
+    private final TopicRepository topicRepository;
     private Board board;
     private int currentPlayer;
     //array of agents, player or computer, order determines the turn
@@ -27,6 +31,22 @@ public class MainViewModel extends AndroidViewModel {
 
     public MainViewModel(@NonNull Application application) {
         super(application);
+        topicRepository = new TopicRepository(application);
+    }
+
+    public void insertTopic(TaskCallbackTopic callback, Topic... topics) {
+        Log.w("DEBUG", "----------------insertTopics--------------");
+        topicRepository.insertTopics(callback, topics);
+    }
+
+    public void getAllTopics(TaskCallbackTopic callback) {
+        Log.w("DEBUG", "----------------getTopics--------------");
+        topicRepository.getAllTopics(callback);
+    }
+
+    public void deleteTopicByName(TaskCallbackTopic callback, String topic) {
+        Log.w("DEBUG", "----------------deleteTopics--------------");
+        topicRepository.deleteTopic(callback, topic);
     }
 
     private char getRandomSymbol() {
@@ -108,6 +128,10 @@ public class MainViewModel extends AndroidViewModel {
 
     public Agent getCurrentPlayer() {
         return agents.get(currentPlayer);
+    }
+
+    public Agent getPlayer() {
+        return agents.get(0);
     }
 
     public Board getBoard() {

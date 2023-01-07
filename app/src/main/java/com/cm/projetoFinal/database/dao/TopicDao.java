@@ -23,4 +23,7 @@ public interface TopicDao {
 
     @Delete
     Integer deleteTopics(Topic topic);
+
+    @Query("DELETE FROM topics")
+    void deleteAllTopics();
 }

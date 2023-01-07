@@ -47,22 +47,22 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
+        EditText username = view.findViewById(R.id.username_register);
         EditText email = view.findViewById(R.id.email_register);
         EditText password = view.findViewById(R.id.password_register);
         Button register = view.findViewById(R.id.register);
 
         toolbar.setTitle(R.string.app_name);
-
-        register.setOnClickListener(v -> {
-                ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString());
-                FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Map<String, Object> data = new HashMap<>();
-                data.put("win",0);
-                data.put("loss",0);
-                data.put("draw",0);
-                data.put("username","");
-                db.collection("users").document(user.getUid()).update(data);
-            });
+                data.put("win", 0);
+                data.put("loss", 0);
+                data.put("draw", 0);
+                data.put("username", username.getText().toString());
+                ((Authentication) requireActivity()).createAccount(email.getText().toString(), password.getText().toString(), data);
+            }
+        });
     }
 }

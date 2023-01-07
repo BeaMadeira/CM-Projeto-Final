@@ -1,6 +1,7 @@
 package com.cm.projetoFinal;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cm.projetoFinal.database.entities.Topic;
 import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.FirstFragment;
 import com.cm.projetoFinal.ui.main.LoginFragment;
@@ -18,6 +20,9 @@ import com.cm.projetoFinal.ui.main.MultiPlayerFragment;
 import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
+import com.cm.projetoFinal.ui.main.interfaces.RemoteDbInterface;
+import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
+import com.cm.projetoFinal.ui.main.interfaces.TaskCallbackTopic;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,6 +32,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
+
+
 import org.apache.commons.lang3.SerializationUtils;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
@@ -35,10 +47,13 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 // ARDUINO PROJECT: https://wokwi.com/projects/348786713380782674
@@ -46,10 +61,12 @@ import java.util.concurrent.Executor;
 // TODO: Refactor code to make it more modular and readable
 // TODO: Authentication using Firebase
 
-public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface, Authentication {
+public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface, TaskCallbackTopic, Authentication, RemoteDbInterface {
     private MainViewModel mainViewModel;
     private MQTTHelper helper;
     private FirebaseAuth mAuth;
+    FirebaseFirestore db;
+    private int numTopics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
         setContentView(R.layout.activity_main);
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
-
+        // Access a Cloud Firestore instance from your Activity
+        db = FirebaseFirestore.getInstance();
         /*SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         if (sharedPreferences.getBoolean("firstrun", true)) {
             Toast.makeText(getApplicationContext(), "Welcome to the app!", Toast.LENGTH_LONG).show();
@@ -72,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
         if (isSignIn()) {
             if (savedInstanceState == null) {
-
                 addFragment(FirstFragment.class, true);
             }
         }
@@ -95,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     String uid = user.getUid();
+                    mainViewModel.getAllTopics(MainActivity.this);
                     subscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
                 }
             }
@@ -118,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                             if (multiPlayerFragment != null && multiPlayerFragment.isVisible()) {
                                 multiPlayerFragment.updateBoard(mainViewModel.getBoard());
                                 multiPlayerFragment.enableButtons();
+                                multiPlayerFragment.verifyGameCondition();
                             }
                         }
                         else {
@@ -221,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void subscribe(String topic) {
         if (helper.mqttAndroidClient.isConnected()) {
             helper.subscribeToTopic(topic);
+            mainViewModel.insertTopic(this, new Topic(topic));
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
         }
@@ -260,6 +280,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void unsubscribe(String topic) {
         if (helper.mqttAndroidClient.isConnected()) {
             helper.unsubscribeToTopic(topic);
+            mainViewModel.deleteTopicByName(this, topic);
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
         }
@@ -283,7 +304,42 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(MainActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void createAccount(String email, String password, Map<String, Object> data) {
+        Task<AuthResult> authResultTask = mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                db.collection("users").document(user.getUid())
+                                        .set(data)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d("DEBUG", "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w("DEBUG", "Error writing document", e);
+                                            }
+                                        });
+                                updateUI(user);
+                            }
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(MainActivity.this, "Authentication failed", Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
                     }
@@ -373,5 +429,152 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     @Override
     public FirebaseUser getCurrentUser() {
         return mAuth.getCurrentUser();
+    }
+
+    @Override
+    public void addWin() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Map<String, Object> data = new HashMap<>();
+                                    Long win = document.getLong("win");
+                                    if (win == null) {
+                                        data.put("win", 1);
+                                    }
+                                    else {
+                                        data.put("win", win + 1);
+                                    }
+                                    db.collection("users").document(user.getUid())
+                                            .set(data, SetOptions.merge());
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void addLoss() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Map<String, Object> data = new HashMap<>();
+                                    Long loss = document.getLong("loss");
+                                    if (loss == null) {
+                                        data.put("loss", 1);
+                                    }
+                                    else {
+                                        data.put("loss", loss + 1);
+                                    }
+                                    db.collection("users").document(user.getUid())
+                                            .set(data, SetOptions.merge());
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void addDraw() {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Map<String, Object> data = new HashMap<>();
+                                    Long draw = document.getLong("draw");
+                                    if (draw == null) {
+                                        data.put("draw", 1);
+                                    }
+                                    else {
+                                        data.put("draw", draw + 1);
+                                    }
+                                    db.collection("users").document(user.getUid())
+                                            .set(data, SetOptions.merge());
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void getUsername(TaskCallback taskCallback) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    taskCallback.onSuccess(document.getString("username"));
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public <T> void onCompletedGetAllTopics(List<T> result) {
+        //TODO: Unchecked Cast
+        List<Topic> tempList = (List<Topic>) result;
+        for (Topic topic : tempList) {
+            helper.subscribeToTopic(topic.getTopic());
+        }
+    }
+
+    @Override
+    public <T> void onCompletedGetTopics(List<T> result) {
+        List<Topic> tempList = (List<Topic>) result;
+
+    }
+
+    @Override
+    public <T> void onCompletedGetTopic(T result) {
+
+    }
+
+    @Override
+    public <T> void onCompletedInsertTopics(List<T> result) {
+        Toast.makeText(getApplication(), R.string.topic_subscribed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public <T> void onCompletedDeleteTopicByName(T result) {
+        Toast.makeText(getApplication(), R.string.topic_unsubscribed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNullPointer() {
+        Toast.makeText(getApplication(), R.string.topic_unsubscribed_unsbbed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSQLiteConstraintException() {
+        Toast.makeText(getApplication(), R.string.topic_subscribed_sbbed, Toast.LENGTH_SHORT).show();
     }
 }

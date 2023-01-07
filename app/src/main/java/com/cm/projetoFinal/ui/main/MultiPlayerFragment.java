@@ -26,6 +26,7 @@ import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
+import com.cm.projetoFinal.ui.main.interfaces.RemoteDbInterface;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
 public class MultiPlayerFragment extends Fragment {
@@ -154,13 +155,24 @@ public class MultiPlayerFragment extends Fragment {
     // Verify if it is Game Over
     private boolean verifyGameCondition(Agent agent, @NonNull Board board) {
         if(!board.getWinnerToast(agent).equals("Continue playing")) {
-            Toast.makeText(requireContext(),board.getWinnerToast(agent),Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), board.getWinnerToast(agent), Toast.LENGTH_SHORT).show();
             updateBoard(board);
             disableButtons();
+            if (board.isWinner(agent.getSymbol())) {
+                ((RemoteDbInterface) requireActivity()).addWin();
+            } else if (board.isWinner(agent.getOpponentSymbol())) {
+                ((RemoteDbInterface) requireActivity()).addLoss();
+            } else if (board.isFull()) {
+                ((RemoteDbInterface) requireActivity()).addDraw();
+            }
             mainViewModel.setPlaying(false);
             return true;
         }
         mainViewModel.setPlaying(true);
         return false;
+    }
+
+    public void verifyGameCondition() {
+        verifyGameCondition(mainViewModel.getPlayer(), mainViewModel.getBoard());
     }
 }
