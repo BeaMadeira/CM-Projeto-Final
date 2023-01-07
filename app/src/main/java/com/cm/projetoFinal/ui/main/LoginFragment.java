@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,7 +46,17 @@ public class LoginFragment extends Fragment {
 
         toolbar.setTitle(R.string.app_name);
 
-        login.setOnClickListener(v -> ((Authentication) requireActivity()).signIn(email.getText().toString(), password.getText().toString()));
+        login.setOnClickListener(v -> {
+            if (email.getText().toString().equals("")) {
+                Toast.makeText(requireActivity(), "Email Empty", Toast.LENGTH_SHORT).show();
+            }
+            if (password.getText().toString().equals("")) {
+                Toast.makeText(requireActivity(), "Password Empty", Toast.LENGTH_SHORT).show();
+            }
+            else {
+                ((Authentication) requireActivity()).signIn(email.getText().toString(), password.getText().toString());
+            }
+        });
 
         register.setOnClickListener(v -> ((FragmentChanger) requireActivity()).replaceFragment(RegisterFragment.class, true));
     }

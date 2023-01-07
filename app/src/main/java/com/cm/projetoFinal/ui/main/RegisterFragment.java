@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,9 +54,17 @@ public class RegisterFragment extends Fragment {
         Button register = view.findViewById(R.id.register);
 
         toolbar.setTitle(R.string.app_name);
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        register.setOnClickListener(v -> {
+            if (username.getText().toString().equals("")) {
+                Toast.makeText(requireActivity(), "Username Empty", Toast.LENGTH_SHORT).show();
+            }
+            if (email.getText().toString().equals("")) {
+                Toast.makeText(requireActivity(), "Email Empty", Toast.LENGTH_SHORT).show();
+            }
+            if (password.getText().toString().equals("")) {
+                Toast.makeText(requireActivity(), "Password Empty", Toast.LENGTH_SHORT).show();
+            }
+            else {
                 Map<String, Object> data = new HashMap<>();
                 data.put("win", 0);
                 data.put("loss", 0);
