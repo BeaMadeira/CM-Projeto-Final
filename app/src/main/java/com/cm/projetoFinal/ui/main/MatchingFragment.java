@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -20,7 +21,7 @@ import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 import com.google.firebase.auth.FirebaseUser;
 
-//TODO Send message with users uid to the topic tiktaktoe/room
+//TODO Send message with users uid to the topic tiktaktoe/room/enter
 //TODO Wait for message sent to topic tiktaktoe/<uid> with the <uid> of the other player
 //TODO Change to Multiplayer Fragment
 
@@ -56,13 +57,25 @@ public class MatchingFragment extends Fragment {
             ((Authentication) requireActivity()).signOut();
             return true;
         });
+    }
 
-        //TODO Get user profile uid
+    @Override
+    public void onStart() {
+        super.onStart();
         FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
         if (user != null) {
             String uid = user.getUid();
-            // TODO Publish user id to the topic tiktaktoe/room/enter
             ((MQTTInterface) requireActivity()).publish(getResources().getString(R.string.tiktaktoe_room_enter), uid);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
+        if (user != null) {
+            String uid = user.getUid();
+            ((MQTTInterface) requireActivity()).publish(getResources().getString(R.string.tiktaktoe_room_leave), uid);
         }
     }
 }
