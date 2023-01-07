@@ -134,7 +134,7 @@
                 android:backgroundTint="#FFF5E7"
                 android:padding="20px">
                 <EditText
-                    android:id="@+id/textView4"
+                    android:id="@+id/username_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="@string/conta_nome_title"
@@ -159,7 +159,7 @@
             android:layout_margin="12dp"
             android:backgroundTint="#EA8E04"
             android:gravity="center"
-            android:text="Save Profile" />
+            android:text="@string/save_profile" />
 
     </LinearLayout>
 </LinearLayout>

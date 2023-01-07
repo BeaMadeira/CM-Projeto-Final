@@ -20,6 +20,7 @@ import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 import com.cm.projetoFinal.ui.main.interfaces.RemoteDbInterface;
+import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -498,6 +499,26 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                                     }
                                     db.collection("users").document(user.getUid())
                                             .set(data, SetOptions.merge());
+                                }
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void getUsername(TaskCallback taskCallback) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid())
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    taskCallback.onSuccess(document.getString("username"));
                                 }
                             }
                         }

@@ -6,4 +6,6 @@ public interface RemoteDbInterface {
     void addLoss();
 
     void addDraw();
+
+    void getUsername(TaskCallback taskCallback);
 }
