@@ -84,6 +84,12 @@ public class AccountFragment extends Fragment {
         toolbar.inflateMenu(R.menu.menu);
         Menu menu = toolbar.getMenu();
 
+        MenuItem signOut = menu.findItem(R.id.sign_out);
+        signOut.setOnMenuItemClickListener(item -> {
+            ((Authentication) requireActivity()).signOut();
+            return true;
+        });
+
         /* butao save profile -->
             // sharedPreferences.edit().putBoolean("firstrun", false).apply();
         EditText username = view.findViewById(R.id.textView4);
