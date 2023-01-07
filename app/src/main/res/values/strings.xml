@@ -43,5 +43,6 @@
     <string name="email">Email</string>
     <string name="logout">Log Out</string>
     <string name="sign_out">Sign Out</string>
+    <string name="single_player">Single Player</string>
 
 </resources>
