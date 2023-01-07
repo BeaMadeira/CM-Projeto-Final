@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cm.projetoFinal.database.entities.Topic;
 import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.FirstFragment;
 import com.cm.projetoFinal.ui.main.LoginFragment;
@@ -21,6 +22,7 @@ import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 import com.cm.projetoFinal.ui.main.interfaces.RemoteDbInterface;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
+import com.cm.projetoFinal.ui.main.interfaces.TaskCallbackTopic;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,6 +47,7 @@ import org.json.JSONObject;
 import org.w3c.dom.Document;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -53,11 +56,12 @@ import java.util.concurrent.Executor;
 // TODO: Refactor code to make it more modular and readable
 // TODO: Authentication using Firebase
 
-public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface, Authentication, RemoteDbInterface {
+public class MainActivity extends AppCompatActivity implements FragmentChanger, MQTTInterface, TaskCallbackTopic, Authentication, RemoteDbInterface {
     private MainViewModel mainViewModel;
     private MQTTHelper helper;
     private FirebaseAuth mAuth;
     FirebaseFirestore db;
+    private int numTopics;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
 
         if (isSignIn()) {
             if (savedInstanceState == null) {
-                addFragment(FirstFragment.class, true);
+                addFragment(FirstFragment.class, false);
             }
         }
         else {
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                 FirebaseUser user = mAuth.getCurrentUser();
                 if (user != null) {
                     String uid = user.getUid();
+                    mainViewModel.getAllTopics(MainActivity.this);
                     subscribe(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid));
                 }
             }
@@ -230,6 +235,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void subscribe(String topic) {
         if (helper.mqttAndroidClient.isConnected()) {
             helper.subscribeToTopic(topic);
+            mainViewModel.insertTopic(this, new Topic(topic));
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
         }
@@ -269,6 +275,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     public void unsubscribe(String topic) {
         if (helper.mqttAndroidClient.isConnected()) {
             helper.unsubscribeToTopic(topic);
+            mainViewModel.deleteTopicByName(this, topic);
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
         }
@@ -524,5 +531,45 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                         }
                     });
         }
+    }
+
+    @Override
+    public <T> void onCompletedGetAllTopics(List<T> result) {
+        //TODO: Unchecked Cast
+        List<Topic> tempList = (List<Topic>) result;
+        for (Topic topic : tempList) {
+            helper.subscribeToTopic(topic.getTopic());
+        }
+    }
+
+    @Override
+    public <T> void onCompletedGetTopics(List<T> result) {
+        List<Topic> tempList = (List<Topic>) result;
+
+    }
+
+    @Override
+    public <T> void onCompletedGetTopic(T result) {
+
+    }
+
+    @Override
+    public <T> void onCompletedInsertTopics(List<T> result) {
+        Toast.makeText(getApplication(), R.string.topic_subscribed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public <T> void onCompletedDeleteTopicByName(T result) {
+        Toast.makeText(getApplication(), R.string.topic_unsubscribed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNullPointer() {
+        Toast.makeText(getApplication(), R.string.topic_unsubscribed_unsbbed, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onSQLiteConstraintException() {
+        Toast.makeText(getApplication(), R.string.topic_subscribed_sbbed, Toast.LENGTH_SHORT).show();
     }
 }

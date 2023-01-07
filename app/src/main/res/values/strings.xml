@@ -45,5 +45,8 @@
     <string name="sign_out">Sign Out</string>
     <string name="single_player">Single Player</string>
     <string name="save_profile">Save Profile</string>
-
+    <string name="topic_subscribed">Topic Subscribed</string>
+    <string name="topic_subscribed_sbbed">You are already subscribed to this topic</string>
+    <string name="topic_unsubscribed">Topic Unsubscribed</string>
+    <string name="topic_unsubscribed_unsbbed">You are not subscribed to this topic</string>
 </resources>
