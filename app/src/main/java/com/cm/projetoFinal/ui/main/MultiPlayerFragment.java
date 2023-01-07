@@ -28,6 +28,7 @@ import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
 import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
 import com.cm.projetoFinal.ui.main.interfaces.RemoteDbInterface;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
+import com.google.firebase.auth.FirebaseUser;
 
 public class MultiPlayerFragment extends Fragment {
     private MainViewModel mainViewModel;
@@ -73,6 +74,11 @@ public class MultiPlayerFragment extends Fragment {
             ((Authentication) requireActivity()).signOut();
             return true;
         });
+
+        String uid = ((Authentication) requireActivity()).getCurrentUser().getUid();
+        String userGameTopic = getResources().getString(R.string.tiktaktoe).concat("/game/").concat(uid);
+
+        ((MQTTInterface) requireActivity()).subscribe(userGameTopic);
 
         final GridLayout gameBoardView = view.findViewById(R.id.game_board_multiplayer);
         mainViewModel.startMultiPlayerGame(tc);
@@ -156,6 +162,12 @@ public class MultiPlayerFragment extends Fragment {
     private boolean verifyGameCondition(Agent agent, @NonNull Board board) {
         if(!board.getWinnerToast(agent).equals("Continue playing")) {
             Toast.makeText(requireContext(), board.getWinnerToast(agent), Toast.LENGTH_SHORT).show();
+
+            String uid = ((Authentication) requireActivity()).getCurrentUser().getUid();
+            String userGameTopic = getResources().getString(R.string.tiktaktoe).concat("/game/").concat(uid);
+
+            ((MQTTInterface) requireActivity()).unsubscribe(userGameTopic);
+
             updateBoard(board);
             disableButtons();
             if (board.isWinner(agent.getSymbol())) {

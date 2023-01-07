@@ -110,11 +110,11 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                         subscribe(userTopic);
                     }
 
-                    // TODO Subscribe to topic tiktaktoe/game/<uid>
+                    /*// TODO Subscribe to topic tiktaktoe/game/<uid>
                     mainViewModel.getTopic(MainActivity.this, userGameTopic);
                     if (topic == null) {
                         subscribe(userGameTopic);
-                    }
+                    }*/
                 }
             }
 
