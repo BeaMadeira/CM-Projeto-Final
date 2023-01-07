@@ -81,8 +81,7 @@ public class FirstFragment extends Fragment {
         cards.get(3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((FragmentChanger) requireActivity()).replaceFragment(AccountFragment.class, true);
-
+                //((FragmentChanger) requireActivity()).replaceFragment(AccountFragment.class, true);
                 Log.d("DEBUG","CLICKED4");
             }
         });

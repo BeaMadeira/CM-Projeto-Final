@@ -28,6 +28,8 @@ import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.concurrent.Executor;
 
@@ -99,11 +101,23 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                 if (user != null) {
                     String uid = user.getUid();
                     if (topic.equals(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid))) {
-                        String content = new String(message.getPayload());
-                        mainViewModel.setOponentTopic(content);
-                        Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT).show();
-                        popBackStack();
-                        replaceFragment(MultiPlayerFragment.class, true);
+                        if (mainViewModel.isPlaying()) {
+                            // The content is a position on the board
+                        }
+                        else {
+                            // The content the matching result
+                            String content = new String(message.getPayload());
+                            try {
+                                JSONObject match = new JSONObject(content);
+                                mainViewModel.setOponentTopic(match.getString("topic"));
+                                mainViewModel.setSymbol(match.getString("symbol"));
+                                popBackStack();
+                                replaceFragment(MultiPlayerFragment.class, true);
+                            }
+                            catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
                 }
             }

@@ -21,6 +21,8 @@ public class MainViewModel extends AndroidViewModel {
     //array of agents, player or computer, order determines the turn
     private List<Agent> agents;
     private String oponentTopic;
+    private String symbol;
+    private boolean isPlaying;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
@@ -116,5 +118,21 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setOponentTopic(String oponentTopic) {
         this.oponentTopic = oponentTopic;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+    }
+
+    public boolean isPlaying() {
+        return isPlaying;
+    }
+
+    public void setPlaying(boolean playing) {
+        isPlaying = playing;
     }
 }
