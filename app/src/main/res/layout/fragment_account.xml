@@ -28,8 +28,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_weight="1.5"
+        android:layout_height="wrap_content"
         android:background="@drawable/custom_rectangle"
         android:backgroundTint="#FF9800"
         android:gravity="bottom"
