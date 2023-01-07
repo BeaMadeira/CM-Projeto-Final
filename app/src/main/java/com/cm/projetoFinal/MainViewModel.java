@@ -9,6 +9,7 @@ import com.cm.projetoFinal.tictactoe.Agent;
 import com.cm.projetoFinal.tictactoe.Board;
 import com.cm.projetoFinal.tictactoe.Computer;
 import com.cm.projetoFinal.tictactoe.Player;
+import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class MainViewModel extends AndroidViewModel {
     //array of agents, player or computer, order determines the turn
     private List<Agent> agents;
     private String oponentTopic;
-    private String symbol;
+    private char symbol;
     private boolean isPlaying;
 
     public MainViewModel(@NonNull Application application) {
@@ -66,35 +67,36 @@ public class MainViewModel extends AndroidViewModel {
     //this method is called when the user clicks on the single player button
     public void startMultiPlayerGame(@NonNull TaskCallback callback) {
         agents = new ArrayList<>();
-        // Get a random symbol for the player
-        char symbol = getRandomSymbol();
+
         // Create a player with the symbol
         Player player = new Player(symbol);
         // Create a computer with the opposite symbol
         Player player2 = new Player(player.getOpponentSymbol());
-        // Whichever agent has the X symbol goes first
+
         agents.add(player);
         agents.add(player2);
-        if (player.getSymbol() == 'X' && player2.getSymbol() == 'O') currentPlayer = 0;
-        else currentPlayer = 1;
+
+        // Whichever agent has the X symbol goes first
+        if (player.getSymbol() == 'X' && player2.getSymbol() == 'O') {
+            currentPlayer = 0;
+        }
+        else {
+            currentPlayer = 1;
+        }
 
         //create a board with the size 3
         board = new Board(3);
 
-        if (currentPlayer == 1) {
+        /*if (currentPlayer == 1) {
             player2.move(board, 0, 0);
             currentPlayer = 0;
-        }
+        }*/
 
-        //call the callback method
+        // Call the callback method
         callback.onSuccess(player);
     }
 
-    public void multiplayerGame() {
-
-    }
-
-    //reset board
+    // Reset board
     public void resetBoard(TaskCallback callback) {
         startSinglePlayerGame(callback);
     }
@@ -120,11 +122,11 @@ public class MainViewModel extends AndroidViewModel {
         this.oponentTopic = oponentTopic;
     }
 
-    public String getSymbol() {
+    public char getSymbol() {
         return symbol;
     }
 
-    public void setSymbol(String symbol) {
+    public void setSymbol(char symbol) {
         this.symbol = symbol;
     }
 
@@ -134,5 +136,20 @@ public class MainViewModel extends AndroidViewModel {
 
     public void setPlaying(boolean playing) {
         isPlaying = playing;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public int getCurrentPlayerInt() {
+        return this.currentPlayer;
+    }
+
+    public void playOpponent(Position position) {
+        if (currentPlayer == 1) {
+            agents.get(currentPlayer).move(board, position.getX(), position.getY());
+            currentPlayer = 0;
+        }
     }
 }

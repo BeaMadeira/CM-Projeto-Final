@@ -22,11 +22,26 @@ import com.cm.projetoFinal.R;
 import com.cm.projetoFinal.tictactoe.Agent;
 import com.cm.projetoFinal.tictactoe.Board;
 import com.cm.projetoFinal.tictactoe.Computer;
+import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.interfaces.Authentication;
 import com.cm.projetoFinal.ui.main.interfaces.FragmentChanger;
+import com.cm.projetoFinal.ui.main.interfaces.MQTTInterface;
+import com.cm.projetoFinal.ui.main.interfaces.TaskCallback;
 
 public class MultiPlayerFragment extends Fragment {
     private MainViewModel mainViewModel;
+    private final TaskCallback tc = new TaskCallback() {
+        @Override
+        public <T> void onSuccess(T result) {
+            Agent player = (Agent) result;
+            if (player.getSymbol() == 'X') {
+                Toast.makeText(requireContext(), "Your turn", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Opponents' turn", Toast.LENGTH_SHORT).show();
+            }
+            updateBoard(mainViewModel.getBoard());
+        }
+    };
 
     public MultiPlayerFragment() {
         // Required empty public constructor
@@ -59,71 +74,99 @@ public class MultiPlayerFragment extends Fragment {
         });
 
         final GridLayout gameBoardView = view.findViewById(R.id.game_board_multiplayer);
+        mainViewModel.startMultiPlayerGame(tc);
+
+        if (mainViewModel.getCurrentPlayerInt() != 0) {
+            disableButtons();
+        }
 
         // Attach a View.OnClickListener to each button on the game board
         for (int i = 0; i < gameBoardView.getChildCount(); i++) {
             final Button button = (Button) gameBoardView.getChildAt(i);
             button.setOnClickListener(view12 -> {
+                // Get Board
                 Board board = mainViewModel.getBoard();
+
                 // Get the row and column indices of the button that was clicked
                 int row = gameBoardView.indexOfChild(view12) / board.getSize();
                 int col = gameBoardView.indexOfChild(view12) % board.getSize();
 
+                // Get Current Player
                 Agent agent = mainViewModel.getCurrentPlayer();
-                board = agent.move(board, row, col);
-                updateBoard(board);
-                if(!verifyGameCondition(agent, board)) {
 
-                    agent = mainViewModel.next();
-                    board = mainViewModel.getBoard();
-                    if (agent instanceof Computer) {
-                        board = agent.move(board, 0, 0);
-                        if (verifyGameCondition(agent, board))
-                            return;
-                        updateBoard(board);
-                        mainViewModel.next();
-                    }
+                // Put player's symbol on (row, col) position
+                board = agent.move(board, row, col);
+
+                // After player's move disable all buttons
+                disableButtons();
+
+                for (int k = 0; k < gameBoardView.getChildCount(); k++) {
+                    Button b = (Button) gameBoardView.getChildAt(k);
+                    boolean e = b.isEnabled();
+                    boolean ee = e;
                 }
 
+                // Change Current Player
+                //mainViewModel.setCurrentPlayer(mainViewModel.getCurrentPlayerInt() == 0 ? 1 : 0);
+
+                // Update Board
+                updateBoard(board);
+
+                // Send move to opponent
+                ((MQTTInterface) requireActivity()).publish(mainViewModel.getOponentTopic(), new Position(row, col));
+
+                if(!verifyGameCondition(agent, board)) {
+                    agent = mainViewModel.next();
+                    board = mainViewModel.getBoard();
+                }
             });
         }
     }
 
     // Update text on all buttons based on values from board
-    private void updateBoard(Board board) {
-        final GridLayout gameBoardView = this.requireView().findViewById(R.id.game_board);
+    public void updateBoard(Board board) {
+        final GridLayout gameBoardView = this.requireView().findViewById(R.id.game_board_multiplayer);
 
         for (int i = 0; i < gameBoardView.getChildCount(); i++) {
             Button button = (Button) gameBoardView.getChildAt(i);
             int row = gameBoardView.indexOfChild(button) / board.getSize();
             int col = gameBoardView.indexOfChild(button) % board.getSize();
             button.setText(String.valueOf(board.getBoard()[row][col]));
-            //disable button if it has a symbol
-            if(board.getBoard()[row][col] != ' ') {
-                button.setEnabled(false);
-            } else {
-                button.setEnabled(true);
-            }
+            // Disable button if it has a symbol
+            button.setEnabled(board.getBoard()[row][col] == ' ');
         }
     }
 
-    //disable all buttons
+    // Disable all buttons
     private void disableButtons() {
-        final GridLayout gameBoardView = this.requireView().findViewById(R.id.game_board);
-
+        final GridLayout gameBoardView = this.requireView().findViewById(R.id.game_board_multiplayer);
         for (int i = 0; i < gameBoardView.getChildCount(); i++) {
             Button button = (Button) gameBoardView.getChildAt(i);
             button.setEnabled(false);
         }
     }
 
+    // Enable all free buttons
+    public void enableButtons() {
+        final GridLayout gameBoardView = this.requireView().findViewById(R.id.game_board_multiplayer);
+        for (int i = 0; i < gameBoardView.getChildCount(); i++) {
+            Button button = (Button) gameBoardView.getChildAt(i);
+            String text = button.getText().toString();
+            boolean enable = text.equals(" ");
+            button.setEnabled(enable);
+        }
+    }
+
+    // Verify if it is Game Over
     private boolean verifyGameCondition(Agent agent, @NonNull Board board) {
         if(!board.getWinnerToast(agent).equals("Continue playing")) {
             Toast.makeText(requireContext(),board.getWinnerToast(agent),Toast.LENGTH_SHORT).show();
             updateBoard(board);
             disableButtons();
+            mainViewModel.setPlaying(false);
             return true;
         }
+        mainViewModel.setPlaying(true);
         return false;
     }
 }

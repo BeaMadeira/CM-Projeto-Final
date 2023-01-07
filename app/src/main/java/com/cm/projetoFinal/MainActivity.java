@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.cm.projetoFinal.tictactoe.Position;
 import com.cm.projetoFinal.ui.main.FirstFragment;
 import com.cm.projetoFinal.ui.main.LoginFragment;
 import com.cm.projetoFinal.ui.main.MultiPlayerFragment;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import org.apache.commons.lang3.SerializationUtils;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallbackExtended;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -103,6 +105,13 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                     if (topic.equals(getResources().getString(R.string.tiktaktoe).concat("/").concat(uid))) {
                         if (mainViewModel.isPlaying()) {
                             // The content is a position on the board
+                            Position position = SerializationUtils.deserialize(message.getPayload());
+                            mainViewModel.playOpponent(position);
+                            MultiPlayerFragment multiPlayerFragment = (MultiPlayerFragment) getSupportFragmentManager().findFragmentByTag("MULTIPLAYER");
+                            if (multiPlayerFragment != null && multiPlayerFragment.isVisible()) {
+                                multiPlayerFragment.updateBoard(mainViewModel.getBoard());
+                                multiPlayerFragment.enableButtons();
+                            }
                         }
                         else {
                             // The content the matching result
@@ -110,9 +119,10 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
                             try {
                                 JSONObject match = new JSONObject(content);
                                 mainViewModel.setOponentTopic(match.getString("topic"));
-                                mainViewModel.setSymbol(match.getString("symbol"));
+                                mainViewModel.setSymbol(match.getString("symbol").charAt(0));
+                                mainViewModel.setPlaying(true);
                                 popBackStack();
-                                replaceFragment(MultiPlayerFragment.class, true);
+                                replaceFragment(MultiPlayerFragment.class, "MULTIPLAYER", true);
                             }
                             catch (Exception e) {
                                 e.printStackTrace();
@@ -164,6 +174,33 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
     }
 
     @Override
+    public void addFragment(Class<? extends Fragment> fragment, String tag, boolean addToBackStack) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction().add(R.id.container, fragment, null, tag);
+        if (addToBackStack) {
+            transaction = transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
+
+    @Override
+    public void replaceFragment(Class<? extends Fragment> fragment, String tag, boolean addToBackStack) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction()
+                .setCustomAnimations(
+                        R.anim.slide_in,  // enter
+                        R.anim.fade_out,  // exit
+                        R.anim.fade_in,   // popEnter
+                        R.anim.slide_out  // popExit
+                )
+                .replace(R.id.container, fragment, null, tag);
+        if (addToBackStack) {
+            transaction = transaction.addToBackStack(null);
+        }
+        transaction.commit();
+    }
+
+    @Override
     public void popBackStack() {
         getSupportFragmentManager().popBackStack();
     }
@@ -179,6 +216,22 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger, 
             helper.subscribeToTopic(topic);
         } else {
             Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void publish(String topic, Position position) {
+        byte[] encodedPayload;
+        if (!helper.mqttAndroidClient.isConnected()) {
+            Toast.makeText(getApplication(), R.string.connection_not_established, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            encodedPayload = SerializationUtils.serialize(position);
+            MqttMessage message = new MqttMessage(encodedPayload);
+            helper.mqttAndroidClient.publish(topic, message);
+        } catch (MqttException e) {
+            e.printStackTrace();
         }
     }
 

@@ -64,6 +64,7 @@ public class FirstFragment extends Fragment {
         cards.get(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mainViewModel.setPlaying(false);
                 ((FragmentChanger) requireActivity()).replaceFragment(MatchingFragment.class, true);
                 Log.d("DEBUG","CLICKED2");
             }
