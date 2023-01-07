@@ -97,20 +97,14 @@ public class MultiPlayerFragment extends Fragment {
                 // Put player's symbol on (row, col) position
                 board = agent.move(board, row, col);
 
-                // After player's move disable all buttons
-                disableButtons();
-
-                for (int k = 0; k < gameBoardView.getChildCount(); k++) {
-                    Button b = (Button) gameBoardView.getChildAt(k);
-                    boolean e = b.isEnabled();
-                    boolean ee = e;
-                }
-
                 // Change Current Player
                 //mainViewModel.setCurrentPlayer(mainViewModel.getCurrentPlayerInt() == 0 ? 1 : 0);
 
                 // Update Board
                 updateBoard(board);
+
+                // After player's move disable all buttons
+                disableButtons();
 
                 // Send move to opponent
                 ((MQTTInterface) requireActivity()).publish(mainViewModel.getOponentTopic(), new Position(row, col));
