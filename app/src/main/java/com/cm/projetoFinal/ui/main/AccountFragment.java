@@ -149,8 +149,6 @@ public class AccountFragment extends Fragment {
             }
         });
 
-
-        FirebaseUser user = ((Authentication) requireActivity()).getCurrentUser();
         DocumentReference ref = FirebaseFirestore.getInstance().collection("users").document(user.getUid());
         ref.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
